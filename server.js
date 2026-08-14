@@ -40,7 +40,7 @@ const DEFAULT_CONFIG = {
   upcomingLimit: 12,
   payment: { network: 'trc20', receiveAddress: '', usdtContract: '', usdcContract: '',
     tronGridBase: 'https://api.trongrid.io', invoiceExpirySeconds: 900, verifyIntervalMs: 15000, simulateEnabled: false },
-  translation: { provider: 'none', deeplApiKey: '', googleApiKey: '' },
+  translation: { provider: 'mymemory', deeplApiKey: '', googleApiKey: '' },
   auction: { slots: [], defaultDurationHours: 72, bidIncrementUsd: 10 }
 };
 const CONFIG = Object.assign({}, DEFAULT_CONFIG, loadJson(CONFIG_FILE, {}));
@@ -101,24 +101,116 @@ function seed() {
     });
     // NOTE: prime slot 00:00:00 is auctioned now — NOT seeded as a fixed claim.
     // [timeOfDay, handle, message, translations, likes]
+    const T = (en, tr, de, es, fr, ar, ja) => ({ en, tr, de, es, fr, ar, ja });
     const SEED = [
-      ['06:06:00', '@sunrise', 'Every sunrise is a second chance. Here is yours.', null, 6],
-      ['07:07:00', '@morning', 'Rise and shine — the world just handed you another 86,400 seconds. Spend them well.', null, 4],
-      ['08:08:00', '@wish', 'Make a wish.', null, 7],
-      ['09:09:00', '@focus', 'One deep breath. You have exactly one second — make it yours.', null, 5],
-      ['10:10:00', '@smile', 'Someone, somewhere, is smiling at this exact second. Pass it on.', null, 8],
-      ['12:34:00', '@sync', '12:34 — the second the whole world glances at the clock and smiles.', null, 11],
-      ['13:37:00', '@crypto', 'We are all gonna make it. Diamond hands, forever — this second is proof.', null, 9],
-      ['15:15:00', '@coffee', 'Pause. Look up from the screen. This second will never come back.', null, 3],
-      ['17:17:00', '@grateful', 'Thank the people who believed in you — right now, this second.', null, 10],
-      ['18:18:00', '@home', 'Coming home never felt this exact. 18:18:18, forever.', null, 6],
-      ['20:00:00', '@aida', 'This second, I choose you.', {
-        en: 'This second, I choose you.', tr: 'Bu saniyede, seni seçiyorum.', de: 'In dieser Sekunde wähle ich dich.',
-        es: 'En este segundo, te elijo a ti.', fr: 'Cette seconde, je te choisis.',
-        ar: 'في هذه الثانية، أختارك أنت.', ja: 'この一秒、私はあなたを選ぶ。'
-      }, 12],
-      ['21:21:00', '@dreamer', 'One day the whole world will read these exact words at the exact same second.', null, 15],
-      ['22:22:00', '@night', 'Make the same wish you made this morning. It is still counting.', null, 8]
+      ['06:06:00', '@sunrise', 'Every sunrise is a second chance. Here is yours.', T(
+        'Every sunrise is a second chance. Here is yours.',
+        'Her gün doğumu yeni bir şanstır. Bu da seninki.',
+        'Jeder Sonnenaufgang ist eine zweite Chance. Das hier ist deine.',
+        'Cada amanecer es una segunda oportunidad. Esta es la tuya.',
+        'Chaque lever de soleil est une seconde chance. Voici la tienne.',
+        'كل شروق شمس هو فرصة ثانية. هذه فرصتك.',
+        '毎日の日の出は二度目のチャンス。これがあなたの番。'
+      ), 6],
+      ['07:07:00', '@morning', 'Rise and shine — the world just handed you another 86,400 seconds. Spend them well.', T(
+        'Rise and shine — the world just handed you another 86,400 seconds. Spend them well.',
+        'Uyan ve parla — dünya sana 86.400 saniye daha verdi. Onları iyi harca.',
+        'Aufstehen und strahlen — die Welt hat dir gerade weitere 86.400 Sekunden geschenkt. Nutze sie gut.',
+        'Levántate y brilla — el mundo te acaba de regalar otros 86.400 segundos. Gástalos bien.',
+        'Réveille-toi et rayonne — le monde vient de t’offrir 86 400 secondes de plus. Utilise-les bien.',
+        'استيقظ وتألق — لقد منحك العالم للتو 86,400 ثانية أخرى. استثمرها جيدًا.',
+        '起きて輝いて — 世界はあなたにさらに86,400秒をくれた。大切に使いましょう。'
+      ), 4],
+      ['08:08:00', '@wish', 'Make a wish.', T(
+        'Make a wish.', 'Bir dilek tut.', 'Wünsch dir was.', 'Pide un deseo.',
+        'Fais un vœu.', 'تمنَّ أمنية.', '願い事をして。'
+      ), 7],
+      ['09:09:00', '@focus', 'One deep breath. You have exactly one second — make it yours.', T(
+        'One deep breath. You have exactly one second — make it yours.',
+        'Derin bir nefes al. Tam olarak bir saniyen var — onu senin yap.',
+        'Ein tiefer Atemzug. Du hast genau eine Sekunde — mach sie zu deiner.',
+        'Una respiración profunda. Tienes exactamente un segundo — hazlo tuyo.',
+        'Une profonde inspiration. Tu as exactement une seconde — fais-la tienne.',
+        'نفس عميق واحد. لديك ثانية واحدة بالضبط — اجعلها لك.',
+        '深呼吸を一つ。あなたにはちょうど一秒ある — それを自分のものに。'
+      ), 5],
+      ['10:10:00', '@smile', 'Someone, somewhere, is smiling at this exact second. Pass it on.', T(
+        'Someone, somewhere, is smiling at this exact second. Pass it on.',
+        'Biri, bir yerlerde, tam bu saniyede gülümsüyor. Sen de devam ettir.',
+        'Jemand, irgendwo, lächelt genau in dieser Sekunde. Gib es weiter.',
+        'Alguien, en algún lugar, está sonriendo en este mismo segundo. Pásalo.',
+        'Quelqu’un, quelque part, sourit à cette seconde précise. Fais-le circuler.',
+        'شخصٌ ما، في مكانٍ ما، يبتسم في هذه الثانية بالذات. انقلها.',
+        '誰かが、どこかで、まさにこの一秒に微笑んでいる。それを広げよう。'
+      ), 8],
+      ['12:34:00', '@sync', '12:34 — the second the whole world glances at the clock and smiles.', T(
+        '12:34 — the second the whole world glances at the clock and smiles.',
+        '12:34 — tüm dünyanın saate bakıp gülümsediği an.',
+        '12:34 — die Sekunde, in der die ganze Welt auf die Uhr schaut und lächelt.',
+        '12:34 — el segundo en que todo el mundo mira el reloj y sonríe.',
+        '12:34 — la seconde où le monde entier regarde l’horloge et sourit.',
+        '12:34 — الثانية التي ينظر فيها العالم كله إلى الساعة ويبتسم.',
+        '12:34 — 世界中が時計を見て微笑む瞬間。'
+      ), 11],
+      ['13:37:00', '@crypto', 'We are all gonna make it. Diamond hands, forever — this second is proof.', T(
+        'We are all gonna make it. Diamond hands, forever — this second is proof.',
+        'Hepimiz başaracağız. Elmas eller, sonsuza dek — bu saniye kanıttır.',
+        'Wir alle werden es schaffen. Diamanthände, für immer — diese Sekunde ist der Beweis.',
+        'Todos lo vamos a lograr. Manos de diamante, para siempre — este segundo es la prueba.',
+        'On va tous y arriver. Mains de diamant, pour toujours — cette seconde en est la preuve.',
+        'سننجح جميعًا. أيدٍ ماسية، للأبد — هذه الثانية هي الدليل.',
+        '私たちはみんな成功する。ダイヤモンドハンド、永遠に — この一秒がその証明。'
+      ), 9],
+      ['15:15:00', '@coffee', 'Pause. Look up from the screen. This second will never come back.', T(
+        'Pause. Look up from the screen. This second will never come back.',
+        'Dur. Ekrandan başını kaldır. Bu saniye bir daha gelmeyecek.',
+        'Innehalten. Schau vom Bildschirm auf. Diese Sekunde kommt nie zurück.',
+        'Pausa. Levanta la vista de la pantalla. Este segundo no volverá.',
+        'Fais une pause. Lève les yeux de l’écran. Cette seconde ne reviendra jamais.',
+        'توقف. ارفع عينيك عن الشاشة. هذه الثانية لن تعود أبدًا.',
+        '立ち止まって。画面から目を上げて。この一秒は二度と戻らない。'
+      ), 3],
+      ['17:17:00', '@grateful', 'Thank the people who believed in you — right now, this second.', T(
+        'Thank the people who believed in you — right now, this second.',
+        'Sana inanan insanlara teşekkür et — tam şimdi, bu saniyede.',
+        'Danke den Menschen, die an dich geglaubt haben — genau jetzt, in dieser Sekunde.',
+        'Agradece a quienes creyeron en ti — justo ahora, en este segundo.',
+        'Remercie ceux qui ont cru en toi — maintenant, à cette seconde même.',
+        'اشكر الأشخاص الذين آمنوا بك — الآن، في هذه الثانية.',
+        'あなたを信じてくれた人に感謝を — 今、この一秒に。'
+      ), 10],
+      ['18:18:00', '@home', 'Coming home never felt this exact. 18:18:18, forever.', T(
+        'Coming home never felt this exact. 18:18:18, forever.',
+        'Eve dönmek hiç bu kadar kesin hissettirmemişti. 18:18:18, sonsuza dek.',
+        'Nach Hause kommen fühlte sich nie so präzise an. 18:18:18, für immer.',
+        'Volver a casa nunca se sintió tan exacto. 18:18:18, para siempre.',
+        'Rentrer à la maison n’a jamais semblé si exact. 18:18:18, pour toujours.',
+        'العودة إلى المنزل لم تكن بهذا الوضوح من قبل. 18:18:18، للأبد.',
+        '家に帰ることがこれほど正確に感じたことはない。18:18:18、永遠に。'
+      ), 6],
+      ['20:00:00', '@aida', 'This second, I choose you.', T(
+        'This second, I choose you.', 'Bu saniyede, seni seçiyorum.', 'In dieser Sekunde wähle ich dich.',
+        'En este segundo, te elijo a ti.', 'Cette seconde, je te choisis.',
+        'في هذه الثانية، أختارك أنت.', 'この一秒、私はあなたを選ぶ。'
+      ), 12],
+      ['21:21:00', '@dreamer', 'One day the whole world will read these exact words at the exact same second.', T(
+        'One day the whole world will read these exact words at the exact same second.',
+        'Bir gün tüm dünya bu satırları tam aynı saniyede okuyacak.',
+        'Eines Tages wird die ganze Welt genau diese Worte in genau derselben Sekunde lesen.',
+        'Un día todo el mundo leerá estas mismas palabras en el mismo segundo exacto.',
+        'Un jour, le monde entier lira ces mots exacts à la même seconde précise.',
+        'يومًا ما سيقرأ العالم كله هذه الكلمات بالضبط في الثانية نفسها.',
+        'いつか世界中が、まさに同じ一秒に、この正確な言葉を読むだろう。'
+      ), 15],
+      ['22:22:00', '@night', 'Make the same wish you made this morning. It is still counting.', T(
+        'Make the same wish you made this morning. It is still counting.',
+        'Bu sabah tuttuğun dileği yine tut. Hâlâ geçerli.',
+        'Wünsch dir dasselbe wie heute Morgen. Es zählt noch immer.',
+        'Pide el mismo deseo de esta mañana. Sigue contando.',
+        'Fais le même vœu que ce matin. Il compte toujours.',
+        'تمنَّ الأمنية نفسها التي تمنيتها هذا الصباح. ما زالت تُحسب.',
+        '今朝と同じ願い事をして。それはまだ有効です。'
+      ), 8]
     ];
     SEED.forEach(function (s, i) {
       const claim = mk('oas-seed-' + (i + 1), s[0], s[1], s[2], 'forever', s[3]);
@@ -277,10 +369,13 @@ function commitClaim(claim, payment) {
   broadcast({ type: 'claim', claim: publicClaim(claim) });
   return publicClaim(claim);
 }
-function doClaim(body) {
+async function doClaim(body) {
   const v = validateClaim(body);
   if (!v.ok) return v;
   const claim = buildClaimObj(v.claim);
+  if (!CONFIG.paymentEnabled && claim.audience === 'all' && !claim.translations) {
+    claim.translations = await autoTranslate(claim.message);
+  }
   if (CONFIG.paymentEnabled) {
     const invoice = createInvoice(claim.id, claim.priceUsd);
     store.pending[invoice.id] = claim;
@@ -438,6 +533,9 @@ function translateText(text, target) {
       if (PHRASES[text] && PHRASES[text][target]) return resolve(PHRASES[text][target]);
       return resolve(text);
     }
+    if (provider === 'mymemory') {
+      return myMemoryTranslate(text, target).then((t) => resolve(t || text));
+    }
     if (provider === 'mock') return resolve('[' + target + '] ' + text);
     if (provider === 'deepl' && CONFIG.translation.deeplApiKey) {
       const body = new URLSearchParams({ text, target_lang: target.toUpperCase() }).toString();
@@ -470,6 +568,49 @@ function translateText(text, target) {
     }
     resolve(text);
   });
+}
+
+
+// ---------- 6b. free keyless MT (MyMemory) ----------
+function myMemoryTranslate(text, target) {
+  return new Promise((resolve) => {
+    if (!text || CONFIG.languages.indexOf(target) === -1) return resolve(null);
+    const url = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=autodetect|' + target;
+    const req = https.get(url, { timeout: 5000 }, (res) => {
+      let d = '';
+      res.on('data', (c) => { d += c; });
+      res.on('end', () => {
+        try {
+          const r = JSON.parse(d);
+          const t = r.responseData && r.responseData.translatedText;
+          resolve(typeof t === 'string' && t.trim() ? t.trim() : null);
+        } catch (e) { resolve(null); }
+      });
+    });
+    req.on('error', () => resolve(null));
+    req.on('timeout', () => { req.destroy(); resolve(null); });
+  });
+}
+async function autoTranslate(message) {
+  const run = (async () => {
+    const tasks = CONFIG.languages.map((lang) =>
+      myMemoryTranslate(message, lang)
+        .then((t) => {
+          if (!t) return null;
+          if (/PLEASE SELECT|INVALID|QUERY LENGTH|MYMEMORY WARNING|NO QUERY/i.test(t)) return null;
+          if (t.toLowerCase() === message.toLowerCase()) return null;
+          return { lang: lang, text: t };
+        })
+        .catch(() => null)
+    );
+    const results = await Promise.all(tasks);
+    const out = {};
+    for (const r of results) if (r) out[r.lang] = r.text;
+    return Object.keys(out).length ? out : null;
+  })();
+  try {
+    return await Promise.race([run, new Promise((_, rej) => setTimeout(() => rej(new Error('mt timeout')), 9000))]);
+  } catch (e) { return null; }
 }
 
 // ---------- 7. SSE ----------
@@ -539,10 +680,14 @@ function handleApi(req, res, pathname) {
   }
   if (req.method === 'POST' && pathname === '/api/claim') {
     return readBody(req, (body) => {
-      const r = doClaim(body);
-      if (r.ok) return sendJson(res, 200, r);
-      const status = { CONFLICT: 409, AUCTION_ONLY: 409, INVALID_JSON: 400 }[r.code] || 400;
-      return sendJson(res, status, { ok: false, code: r.code });
+      doClaim(body).then((r) => {
+        if (r.ok) return sendJson(res, 200, r);
+        const status = { CONFLICT: 409, AUCTION_ONLY: 409, INVALID_JSON: 400 }[r.code] || 400;
+        return sendJson(res, status, { ok: false, code: r.code });
+      }).catch((e) => {
+        console.error('[oas] claim error:', e && e.message);
+        return sendJson(res, 500, { ok: false, code: 'INVALID_JSON' });
+      });
     });
   }
   if (req.method === 'POST' && pathname === '/api/payment/simulate') {

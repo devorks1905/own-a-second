@@ -1,10 +1,30 @@
 {
   "port": 8080,
-  "pricesUsd": { "one": 9, "forever": 29 },
+  "pricesUsd": {
+    "one": 9,
+    "forever": 29
+  },
   "maxMessageChars": 120,
   "maxNameChars": 40,
-  "languages": ["en", "tr", "de", "es", "fr", "ar", "ja"],
-  "audienceOptions": ["all", "en", "tr", "de", "es", "fr", "ar", "ja"],
+  "languages": [
+    "en",
+    "tr",
+    "de",
+    "es",
+    "fr",
+    "ar",
+    "ja"
+  ],
+  "audienceOptions": [
+    "all",
+    "en",
+    "tr",
+    "de",
+    "es",
+    "fr",
+    "ar",
+    "ja"
+  ],
   "paymentEnabled": false,
   "storage": {
     "mode": "file",
@@ -26,16 +46,28 @@
     "simulateEnabled": true
   },
   "translation": {
-    "provider": "none",
+    "provider": "mymemory",
     "deeplApiKey": "",
     "googleApiKey": ""
   },
   "auction": {
     "slots": [
-      { "slot": "00:00:00", "minBidUsd": 500 },
-      { "slot": "11:11:11", "minBidUsd": 300 },
-      { "slot": "12:00:00", "minBidUsd": 200 },
-      { "slot": "23:59:59", "minBidUsd": 1000 }
+      {
+        "slot": "00:00:00",
+        "minBidUsd": 500
+      },
+      {
+        "slot": "11:11:11",
+        "minBidUsd": 300
+      },
+      {
+        "slot": "12:00:00",
+        "minBidUsd": 200
+      },
+      {
+        "slot": "23:59:59",
+        "minBidUsd": 1000
+      }
     ],
     "defaultDurationHours": 72,
     "bidIncrementUsd": 10
