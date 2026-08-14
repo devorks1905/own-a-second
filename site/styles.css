@@ -99,32 +99,36 @@ section{padding:56px 0}
 .sec-sub{color:var(--mut);max-width:660px;margin-bottom:34px}
 .sec-title .accent{background:linear-gradient(90deg,var(--gold),var(--gold3));-webkit-background-clip:text;background-clip:text;color:transparent}
 
-/* ---------- wall ---------- */
-.wall-section{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.wall-col{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;min-height:260px;backdrop-filter:blur(8px)}
-.wall-title{font-family:var(--mono);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.wall-title::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold)}
-.feed{display:flex;flex-direction:column;gap:12px;max-height:460px;overflow-y:auto;padding-right:4px}
-.feed::-webkit-scrollbar{width:6px}
+/* ---------- wall (flanking the clock) ---------- */
+.clock-wall-grid{display:grid;grid-template-columns:minmax(0,250px) minmax(0,1fr) minmax(0,250px);gap:18px;align-items:stretch;margin-top:46px}
+.clock-wall-grid .clock-card{margin:0 auto}
+.wall-col{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 14px;backdrop-filter:blur(8px);display:flex;flex-direction:column;max-height:560px}
+.wall-title{font-family:var(--mono);font-size:13px;letter-spacing:3px;text-transform:uppercase;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:9px;padding-bottom:11px;border-bottom:1px solid var(--line)}
+.wall-title-icon{font-size:17px;line-height:1;filter:drop-shadow(0 0 6px rgba(240,180,41,.55))}
+.wall-title span:last-child{background:linear-gradient(90deg,var(--gold),var(--gold3));-webkit-background-clip:text;background-clip:text;color:transparent}
+.feed{display:flex;flex-direction:column;gap:11px;max-height:460px;overflow-y:auto;padding-right:3px;flex:1}
+.feed::-webkit-scrollbar{width:5px}
 .feed::-webkit-scrollbar-thumb{background:var(--line2);border-radius:3px}
 .feed-item{
-  background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:14px 16px;
+  background:var(--bg2);border:1px solid var(--line);border-radius:13px;padding:12px 13px;
   cursor:pointer;position:relative;transition:transform .18s var(--ease),border-color .2s,box-shadow .2s;
   animation:fadeUp .4s var(--ease) both;
 }
-.feed-item:hover{transform:translateY(-2px);border-color:var(--gold);box-shadow:0 10px 30px -12px rgba(0,0,0,.7)}
+.feed-item:hover{transform:translateY(-2px);border-color:var(--gold);box-shadow:0 10px 26px -12px rgba(0,0,0,.7)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.feed-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}
-.feed-who{font-weight:700;font-size:13px;color:var(--gold)}
-.feed-time{font-family:var(--mono);font-size:10.5px;color:var(--mut)}
-.feed-msg{font-size:15px;font-style:italic;color:var(--txt);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.feed-more{font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--gold);margin-top:8px;opacity:0;transition:opacity .2s}
-.feed-item:hover .feed-more{opacity:1}
-.like-btn{position:absolute;top:12px;right:12px;background:transparent;border:1px solid var(--line2);border-radius:999px;color:var(--txt);font-size:12px;padding:3px 11px;cursor:pointer;transition:.15s;z-index:2}
+.feed-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;padding-right:36px}
+.feed-who{font-weight:700;font-size:12.5px;color:var(--gold)}
+.feed-time{font-family:var(--mono);font-size:10px;color:var(--mut)}
+.feed-msg{font-size:13.5px;font-style:italic;color:var(--txt);line-height:1.45;word-break:break-word}
+.like-btn{position:absolute;top:10px;right:10px;background:transparent;border:1px solid var(--line2);border-radius:999px;color:var(--txt);font-size:11px;padding:2px 9px;cursor:pointer;transition:.15s;z-index:2}
 .like-btn:hover{border-color:var(--red);color:var(--red);transform:scale(1.08)}
 .like-btn.liked{color:var(--red);border-color:rgba(251,113,133,.5);background:rgba(251,113,133,.08)}
-.feed-empty{padding:30px;color:var(--mut);font-size:14px;text-align:center}
-@media(max-width:780px){.wall-section{grid-template-columns:1fr}}
+.feed-empty{padding:28px;color:var(--mut);font-size:13px;text-align:center}
+@media(max-width:980px){
+  .clock-wall-grid{grid-template-columns:1fr;gap:16px}
+  .clock-wall-grid .clock-card{order:-1}
+  .wall-col{max-height:340px}
+}
 
 /* ---------- modal ---------- */
 .modal-backdrop{

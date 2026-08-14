@@ -894,6 +894,15 @@ var upcoming = [];
 var momentTimer = null;
 
 function truncate(text, max){ return text.length > max ? text.slice(0, max) + '…' : text; }
+function truncateMessage(text){
+  var words = (text || '').split(/\s+/).filter(Boolean);
+  if (words.length === 0) return '';
+  if (words.length === 1) return words[0];
+  if (words.length === 2) return words[0] + ' ' + words[1];
+  var third = words[2];
+  if (third.length > 3) third = third.slice(0, 3);
+  return words[0] + ' ' + words[1] + ' ' + third + '..........';
+}
 
 function buildFeedItem(c){
   var tr = translateMsg(c);
@@ -913,13 +922,8 @@ function buildFeedItem(c){
 
   var msgEl = document.createElement('div');
   msgEl.className = 'feed-msg';
-  msgEl.textContent = tr.text;  // CSS clamps to 2 lines => ellipsis
+  msgEl.textContent = truncateMessage(tr.text);
   div.appendChild(msgEl);
-
-  var more = document.createElement('div');
-  more.className = 'feed-more';
-  more.textContent = t('read_more') + ' →';
-  div.appendChild(more);
 
   var likeBtn = document.createElement('button');
   likeBtn.className = 'like-btn';
