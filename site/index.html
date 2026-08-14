@@ -43,19 +43,36 @@
     <p class="sub" data-i18n="sub">There is one clock, ticking everywhere at once. Buy a second on it. When your second arrives, your message is shown to everyone — at the same moment, for exactly one second.</p>
 
     <div class="clock-card">
-      <div class="clock-label" data-i18n="clock_label">Now · Coordinated Universal Time</div>
+      <div class="clock-label"><span data-i18n="clock_label">Now · Coordinated Universal Time</span><span class="live-badge"><span class="live-dot"></span><span data-i18n="live_label">LIVE</span></span></div>
       <div class="clock" id="clock">00:00:<span class="sec">00</span></div>
       <div class="second-id">Second #<b id="unix">0</b> <span id="status" data-i18n="unclaimed">— unclaimed</span></div>
+      <div class="countdown" id="countdown"></div>
       <div class="claimed">
         <span data-i18n="clock_owned_by">Owned by</span> <span class="who" id="who">—</span>
         <span class="langflag" id="langFlag" style="display:none"></span>
         <span class="msg" id="msg" style="display:none"></span>
       </div>
       <button class="claim-now" id="claimNow" data-i18n="claim_now">Claim it now</button>
+      <div class="moment" id="moment">
+        <div class="moment-who" id="momentWho"></div>
+        <div class="moment-msg" id="momentMsg"></div>
+        <div class="moment-sec" id="momentSec"></div>
+      </div>
     </div>
 
     <div class="badge-demo" data-i18n="badge_demo">Demo mode · crypto checkout coming soon</div>
   </div>
+
+  <section id="wall" class="wall-section">
+    <div class="wall-col">
+      <div class="wall-title"><span data-i18n="feed_title">Live feed</span></div>
+      <div class="feed" id="feedList"></div>
+    </div>
+    <div class="wall-col">
+      <div class="wall-title"><span data-i18n="top_title">Most loved</span></div>
+      <div class="feed" id="topList"></div>
+    </div>
+  </section>
 
   <section id="claim">
     <div class="sec-title" data-i18n="claim_title">Claim a second</div>

@@ -106,6 +106,8 @@ function seed() {
       es: 'En este segundo, te elijo a ti.', fr: 'Cette seconde, je te choisis.',
       ar: 'في هذه الثانية، أختارك أنت.', ja: 'この一秒、私はあなたを選ぶ。'
     });
+    store.forever['08:08:00'].likes = 7;
+    store.forever['20:00:00'].likes = 12;
     store.stats.claims = 2;
     store.stats.revenueUsd = CONFIG.pricesUsd.forever * 2;
     dirty = true;
@@ -140,12 +142,14 @@ function computeUpcoming() {
   for (const key of Object.keys(store.claims)) {
     const c = store.claims[key];
     if (c.secondUnix > now) list.push({ id: c.id, type: c.type, name: c.name, message: c.message,
-      audience: c.audience, translations: c.translations || null, at: c.secondUnix, daily: false });
+      audience: c.audience, translations: c.translations || null, at: c.secondUnix, daily: false,
+      timeOfDay: null, likes: c.likes || 0 });
   }
   for (const tod of Object.keys(store.forever)) {
     const c = store.forever[tod];
     list.push({ id: c.id, type: c.type, name: c.name, message: c.message, audience: c.audience,
-      translations: c.translations || null, at: nextOccurrence(tod, now), daily: true });
+      translations: c.translations || null, at: nextOccurrence(tod, now), daily: true,
+      timeOfDay: tod, likes: c.likes || 0 });
   }
   list.sort((a, b) => a.at - b.at);
   return list.slice(0, CONFIG.upcomingLimit);
@@ -154,11 +158,11 @@ function ledgerList() {
   const list = [];
   for (const key of Object.keys(store.claims)) {
     const c = store.claims[key];
-    list.push(publicClaim(c));
+    list.push(Object.assign({ at: c.secondUnix, daily: false }, publicClaim(c)));
   }
   for (const tod of Object.keys(store.forever)) {
     const c = store.forever[tod];
-    list.push(publicClaim(c));
+    list.push(Object.assign({ at: nextOccurrence(tod, nowUnix()), daily: true }, publicClaim(c)));
   }
   list.sort((a, b) => a.claimedAt - b.claimedAt);
   return list;
@@ -166,7 +170,44 @@ function ledgerList() {
 function publicClaim(c) {
   return { id: c.id, type: c.type, name: c.name, message: c.message, audience: c.audience,
     translations: c.translations || null, secondUnix: c.secondUnix || null, timeOfDay: c.timeOfDay || null,
-    priceUsd: c.priceUsd, claimedAt: c.claimedAt, payment: c.payment || null };
+    priceUsd: c.priceUsd, claimedAt: c.claimedAt, payment: c.payment || null, likes: c.likes || 0 };
+}
+
+// ---------- likes (no accounts yet — soft signal, rate-limited per IP) ----------
+const likeWindows = new Map();
+const LIKE_LIMIT_PER_HOUR = 30;
+function clientIp(req) {
+  const fwd = req.headers['x-forwarded-for'];
+  if (fwd) return String(fwd).split(',')[0].trim();
+  return req.socket.remoteAddress || 'unknown';
+}
+function likeAllowed(ip) {
+  const now = Date.now();
+  const w = likeWindows.get(ip);
+  if (!w || now > w.resetAt) { likeWindows.set(ip, { count: 1, resetAt: now + 3600000 }); return true; }
+  if (w.count >= LIKE_LIMIT_PER_HOUR) return false;
+  w.count += 1;
+  return true;
+}
+function findClaimById(id) {
+  for (const k in store.claims) if (store.claims[k].id === id) return store.claims[k];
+  for (const k in store.forever) if (store.forever[k].id === id) return store.forever[k];
+  return null;
+}
+function doLike(id, ip) {
+  const c = findClaimById(id);
+  if (!c) return { code: 'NOT_FOUND' };
+  if (!likeAllowed(ip)) return { code: 'RATE_LIMITED' };
+  c.likes = (c.likes || 0) + 1;
+  persist();
+  broadcast({ type: 'like', claimId: id, likes: c.likes });
+  return { ok: true, likes: c.likes };
+}
+function topList() {
+  const items = [];
+  for (const k in store.claims) { const c = store.claims[k]; items.push(Object.assign({ at: c.secondUnix, daily: false }, publicClaim(c))); }
+  for (const k in store.forever) { const c = store.forever[k]; items.push(Object.assign({ at: nextOccurrence(k, nowUnix()), daily: true }, publicClaim(c))); }
+  return items.sort((a, b) => (b.likes || 0) - (a.likes || 0)).slice(0, 10);
 }
 function validateClaim(body) {
   if (!body || typeof body !== 'object') return { code: 'INVALID_JSON' };
@@ -206,7 +247,7 @@ function buildClaimObj(validated) {
   store.idCounter += 1;
   return Object.assign({}, validated, {
     id: 'oas-' + String(store.idCounter).padStart(5, '0'),
-    priceUsd: price, claimedAt: Date.now(), payment: 'demo'
+    priceUsd: price, claimedAt: Date.now(), payment: 'demo', likes: 0
   });
 }
 function commitClaim(claim, payment) {
@@ -508,6 +549,17 @@ function handleApi(req, res, pathname) {
       if (!text || CONFIG.languages.indexOf(target) === -1) return sendJson(res, 400, { ok: false, code: 'INVALID' });
       return translateText(text, target).then((translated) => sendJson(res, 200, { ok: true, translated }));
     });
+  }
+  if (req.method === 'POST' && pathname === '/api/like') {
+    return readBody(req, (body) => {
+      const r = doLike(body && body.claimId, clientIp(req));
+      if (r.ok) return sendJson(res, 200, r);
+      const status = r.code === 'RATE_LIMITED' ? 429 : 404;
+      return sendJson(res, status, { ok: false, code: r.code });
+    });
+  }
+  if (req.method === 'GET' && pathname === '/api/top') {
+    return sendJson(res, 200, { claims: topList() });
   }
   if (req.method === 'GET' && pathname === '/api/events') {
     res.writeHead(200, {
