@@ -101,15 +101,21 @@ function seed() {
     });
     // NOTE: prime slot 00:00:00 is auctioned now — NOT seeded as a fixed claim.
     store.forever['08:08:00'] = mk('oas-seed-1', '08:08:00', '@wish', 'Make a wish.', 'forever');
+    store.forever['07:07:00'] = mk('oas-seed-3', '07:07:00', '@morning', 'Rise and shine — the world just handed you another 86,400 seconds. Spend them well.', 'forever');
+    store.forever['13:37:00'] = mk('oas-seed-4', '13:37:00', '@crypto', 'We are all gonna make it. Diamond hands, forever — this second is proof.', 'forever');
     store.forever['20:00:00'] = mk('oas-seed-2', '20:00:00', '@aida', 'This second, I choose you.', 'forever', {
       en: 'This second, I choose you.', tr: 'Bu saniyede, seni seçiyorum.', de: 'In dieser Sekunde wähle ich dich.',
       es: 'En este segundo, te elijo a ti.', fr: 'Cette seconde, je te choisis.',
       ar: 'في هذه الثانية، أختارك أنت.', ja: 'この一秒、私はあなたを選ぶ。'
     });
+    store.forever['21:21:00'] = mk('oas-seed-5', '21:21:00', '@dreamer', 'One day the whole world will read these exact words at the exact same second.', 'forever');
     store.forever['08:08:00'].likes = 7;
     store.forever['20:00:00'].likes = 12;
-    store.stats.claims = 2;
-    store.stats.revenueUsd = CONFIG.pricesUsd.forever * 2;
+    store.forever['13:37:00'].likes = 9;
+    store.forever['07:07:00'].likes = 4;
+    store.forever['21:21:00'].likes = 15;
+    store.stats.claims = 5;
+    store.stats.revenueUsd = CONFIG.pricesUsd.forever * 5;
     dirty = true;
   }
   // seed auctions for configured prime slots (if not present)

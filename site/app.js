@@ -69,7 +69,7 @@ en: {
   demo_title:"See your message in their language", demo_sub:"Buy a second and choose who sees it: everyone (auto-translated into each viewer's language) or a specific language.",
   demo_lead:"If you choose “All languages”, a viewer sees your message in their own language:",
   demo_msg:"This second, I choose you.",
-  auction_title:"Prime Seconds — live auction", auction_sub:"The rarest moments of the clock. Bid to own them forever.", auction_min:"Minimum", auction_current:"Current bid", auction_ends:"Ends", auction_bid_count:"bids", auction_no_live:"No live auctions right now.", auction_place:"Place a bid", auction_your_name:"Your name / handle", auction_amount:"Bid amount (USD)", auction_submit:"Place bid", auction_bid_ok:"Bid placed!", auction_closed:"This auction has ended.", auction_bid_low:"Bid is too low.", auction_not_found:"Auction not found.", auction_won:"Winner", pay_pending:"Payment required", err_auction_only:"That moment is a Prime Second — bid for it in the auction.", feed_title:"Live feed", top_title:"Most loved", feed_empty:"No messages yet — claim the first second.", top_empty:"No likes yet — be the first to love one.", next_broadcast:"Next broadcast", live_label:"LIVE", like_label:"Like", lang_label:"Language", footer1:"OWN A SECOND — a prototype. © 2026", footer2:"Every second has a number. Every number can have an owner."
+  auction_title:"Prime Seconds — live auction", auction_sub:"The rarest moments of the clock. Bid to own them forever.", auction_min:"Minimum", auction_current:"Current bid", auction_ends:"Ends", auction_bid_count:"bids", auction_no_live:"No live auctions right now.", auction_place:"Place a bid", auction_your_name:"Your name / handle", auction_amount:"Bid amount (USD)", auction_submit:"Place bid", auction_bid_ok:"Bid placed!", auction_closed:"This auction has ended.", auction_bid_low:"Bid is too low.", auction_not_found:"Auction not found.", auction_won:"Winner", pay_pending:"Payment required", err_auction_only:"That moment is a Prime Second — bid for it in the auction.", feed_title:"Live feed", top_title:"Most loved", feed_empty:"No messages yet — claim the first second.", top_empty:"No likes yet — be the first to love one.", next_broadcast:"Next broadcast", live_label:"LIVE", like_label:"Like", read_more:"Read more", lang_label:"Language", footer1:"OWN A SECOND — a prototype. © 2026", footer2:"Every second has a number. Every number can have an owner."
 },
 tr: {
   nav_how:"Nasıl çalışır", nav_pricing:"Fiyatlar", nav_story:"Hikâye", nav_claim:"Bir saniye al",
@@ -131,7 +131,7 @@ tr: {
   demo_title:"Mesajını onların dilinde gör", demo_sub:"Bir saniye al ve kimin göreceğini seç: herkes (her izleyicinin diline otomatik çevrilir) ya da belirli bir dil.",
   demo_lead:"“Tüm diller”i seçerseniz, izleyici mesajınızı kendi dilinde görür:",
   demo_msg:"Bu saniyede, seni seçiyorum.",
-  auction_title:"Prime Saniyeler — canlı açık artırma", auction_sub:"Saatin en nadir anları. Onlara sonsuza dek sahip olmak için teklif ver.", auction_min:"Minimum", auction_current:"Güncel teklif", auction_ends:"Bitiş", auction_bid_count:"teklif", auction_no_live:"Şu an canlı açık artırma yok.", auction_place:"Teklif ver", auction_your_name:"Adın / kullanıcı adın", auction_amount:"Teklif tutarı (USD)", auction_submit:"Teklif ver", auction_bid_ok:"Teklif verildi!", auction_closed:"Bu açık artırma sona erdi.", auction_bid_low:"Teklif çok düşük.", auction_not_found:"Açık artırma bulunamadı.", auction_won:"Kazanan", pay_pending:"Ödeme gerekli", err_auction_only:"O an bir Prime Saniyedir — açık artırmada teklif ver.", feed_title:"Canlı akış", top_title:"En çok beğenilen", feed_empty:"Henüz mesaj yok — ilk saniyeyi sahiplen.", top_empty:"Henüz beğeni yok — ilk beğenen sen ol.", next_broadcast:"Sıradaki yayın", live_label:"CANLI", like_label:"Beğen", lang_label:"Dil", footer1:"OWN A SECOND — bir prototip. © 2026", footer2:"Her saniyenin bir numarası vardır. Her numaranın bir sahibi olabilir."
+  auction_title:"Prime Saniyeler — canlı açık artırma", auction_sub:"Saatin en nadir anları. Onlara sonsuza dek sahip olmak için teklif ver.", auction_min:"Minimum", auction_current:"Güncel teklif", auction_ends:"Bitiş", auction_bid_count:"teklif", auction_no_live:"Şu an canlı açık artırma yok.", auction_place:"Teklif ver", auction_your_name:"Adın / kullanıcı adın", auction_amount:"Teklif tutarı (USD)", auction_submit:"Teklif ver", auction_bid_ok:"Teklif verildi!", auction_closed:"Bu açık artırma sona erdi.", auction_bid_low:"Teklif çok düşük.", auction_not_found:"Açık artırma bulunamadı.", auction_won:"Kazanan", pay_pending:"Ödeme gerekli", err_auction_only:"O an bir Prime Saniyedir — açık artırmada teklif ver.", feed_title:"Canlı akış", top_title:"En çok beğenilen", feed_empty:"Henüz mesaj yok — ilk saniyeyi sahiplen.", top_empty:"Henüz beğeni yok — ilk beğenen sen ol.", next_broadcast:"Sıradaki yayın", live_label:"CANLI", like_label:"Beğen", read_more:"Devamını oku", lang_label:"Dil", footer1:"OWN A SECOND — bir prototip. © 2026", footer2:"Her saniyenin bir numarası vardır. Her numaranın bir sahibi olabilir."
 },
 de: {
   nav_how:"So funktioniert's", nav_pricing:"Preise", nav_story:"Geschichte", nav_claim:"Sekunde sichern",
@@ -193,7 +193,7 @@ de: {
   demo_title:"Deine Nachricht in ihrer Sprache", demo_sub:"Kaufe eine Sekunde und wähle, wer sie sieht: alle (automatisch übersetzt) oder eine bestimmte Sprache.",
   demo_lead:"Wählst du „Alle Sprachen“, sieht ein Zuschauer deine Nachricht in seiner Sprache:",
   demo_msg:"In dieser Sekunde wähle ich dich.",
-  auction_title:"Prime-Sekunden — Live-Auktion", auction_sub:"Die seltensten Momente der Uhr. Biete, um sie für immer zu besitzen.", auction_min:"Minimum", auction_current:"Aktuelles Gebot", auction_ends:"Endet", auction_bid_count:"Gebote", auction_no_live:"Gerade keine Live-Auktionen.", auction_place:"Gebot abgeben", auction_your_name:"Dein Name / Handle", auction_amount:"Gebot (USD)", auction_submit:"Bieten", auction_bid_ok:"Gebot abgegeben!", auction_closed:"Diese Auktion ist beendet.", auction_bid_low:"Gebot zu niedrig.", auction_not_found:"Auktion nicht gefunden.", auction_won:"Gewinner", pay_pending:"Zahlung erforderlich", err_auction_only:"Dieser Moment ist eine Prime-Sekunde — biete in der Auktion.", feed_title:"Live-Feed", top_title:"Beliebteste", feed_empty:"Noch keine Nachrichten — sichere die erste Sekunde.", top_empty:"Noch keine Likes — sei der Erste.", next_broadcast:"Nächste Ausstrahlung", live_label:"LIVE", like_label:"Gefällt mir", lang_label:"Sprache", footer1:"OWN A SECOND — ein Prototyp. © 2026", footer2:"Jede Sekunde hat eine Nummer. Jede Nummer kann einen Besitzer haben."
+  auction_title:"Prime-Sekunden — Live-Auktion", auction_sub:"Die seltensten Momente der Uhr. Biete, um sie für immer zu besitzen.", auction_min:"Minimum", auction_current:"Aktuelles Gebot", auction_ends:"Endet", auction_bid_count:"Gebote", auction_no_live:"Gerade keine Live-Auktionen.", auction_place:"Gebot abgeben", auction_your_name:"Dein Name / Handle", auction_amount:"Gebot (USD)", auction_submit:"Bieten", auction_bid_ok:"Gebot abgegeben!", auction_closed:"Diese Auktion ist beendet.", auction_bid_low:"Gebot zu niedrig.", auction_not_found:"Auktion nicht gefunden.", auction_won:"Gewinner", pay_pending:"Zahlung erforderlich", err_auction_only:"Dieser Moment ist eine Prime-Sekunde — biete in der Auktion.", feed_title:"Live-Feed", top_title:"Beliebteste", feed_empty:"Noch keine Nachrichten — sichere die erste Sekunde.", top_empty:"Noch keine Likes — sei der Erste.", next_broadcast:"Nächste Ausstrahlung", live_label:"LIVE", like_label:"Gefällt mir", read_more:"Mehr lesen", lang_label:"Sprache", footer1:"OWN A SECOND — ein Prototyp. © 2026", footer2:"Jede Sekunde hat eine Nummer. Jede Nummer kann einen Besitzer haben."
 },
 es: {
   nav_how:"Cómo funciona", nav_pricing:"Precios", nav_story:"Historia", nav_claim:"Reclama un segundo",
@@ -255,7 +255,7 @@ es: {
   demo_title:"Tu mensaje en su idioma", demo_sub:"Compra un segundo y elige quién lo ve: todos (traducido automáticamente) o un idioma concreto.",
   demo_lead:"Si eliges «Todos los idiomas», cada espectador ve tu mensaje en su idioma:",
   demo_msg:"En este segundo, te elijo a ti.",
-  auction_title:"Segundos Prime — subasta en vivo", auction_sub:"Los momentos más raros del reloj. Puja para poseerlos para siempre.", auction_min:"Mínimo", auction_current:"Puja actual", auction_ends:"Termina", auction_bid_count:"pujas", auction_no_live:"No hay subastas en vivo ahora.", auction_place:"Hacer una puja", auction_your_name:"Tu nombre / usuario", auction_amount:"Cantidad de la puja (USD)", auction_submit:"Pujar", auction_bid_ok:"¡Puja realizada!", auction_closed:"Esta subasta ha terminado.", auction_bid_low:"Puja demasiado baja.", auction_not_found:"Subasta no encontrada.", auction_won:"Ganador", pay_pending:"Pago requerido", err_auction_only:"Ese momento es un Segundo Prime — puja por él en la subasta.", feed_title:"Feed en vivo", top_title:"Más queridos", feed_empty:"Aún no hay mensajes — reclama el primer segundo.", top_empty:"Aún no hay likes — sé el primero.", next_broadcast:"Próxima emisión", live_label:"EN VIVO", like_label:"Me gusta", lang_label:"Idioma", footer1:"OWN A SECOND — un prototipo. © 2026", footer2:"Cada segundo tiene un número. Cada número puede tener un dueño."
+  auction_title:"Segundos Prime — subasta en vivo", auction_sub:"Los momentos más raros del reloj. Puja para poseerlos para siempre.", auction_min:"Mínimo", auction_current:"Puja actual", auction_ends:"Termina", auction_bid_count:"pujas", auction_no_live:"No hay subastas en vivo ahora.", auction_place:"Hacer una puja", auction_your_name:"Tu nombre / usuario", auction_amount:"Cantidad de la puja (USD)", auction_submit:"Pujar", auction_bid_ok:"¡Puja realizada!", auction_closed:"Esta subasta ha terminado.", auction_bid_low:"Puja demasiado baja.", auction_not_found:"Subasta no encontrada.", auction_won:"Ganador", pay_pending:"Pago requerido", err_auction_only:"Ese momento es un Segundo Prime — puja por él en la subasta.", feed_title:"Feed en vivo", top_title:"Más queridos", feed_empty:"Aún no hay mensajes — reclama el primer segundo.", top_empty:"Aún no hay likes — sé el primero.", next_broadcast:"Próxima emisión", live_label:"EN VIVO", like_label:"Me gusta", read_more:"Leer más", lang_label:"Idioma", footer1:"OWN A SECOND — un prototipo. © 2026", footer2:"Cada segundo tiene un número. Cada número puede tener un dueño."
 },
 fr: {
   nav_how:"Comment ça marche", nav_pricing:"Tarifs", nav_story:"Histoire", nav_claim:"Réserver une seconde",
@@ -317,7 +317,7 @@ fr: {
   demo_title:"Votre message dans leur langue", demo_sub:"Achetez une seconde et choisissez qui la voit : tout le monde (traduit automatiquement) ou une langue précise.",
   demo_lead:"Si vous choisissez « Toutes les langues », chaque spectateur voit votre message dans sa langue :",
   demo_msg:"Cette seconde, je te choisis.",
-  auction_title:"Secondes Prime — enchère en direct", auction_sub:"Les moments les plus rares de l'horloge. Enchérissez pour les posséder pour toujours.", auction_min:"Minimum", auction_current:"Enchère actuelle", auction_ends:"Fin", auction_bid_count:"enchères", auction_no_live:"Aucune enchère en direct pour le moment.", auction_place:"Enchérir", auction_your_name:"Votre nom / pseudo", auction_amount:"Montant de l'enchère (USD)", auction_submit:"Enchérir", auction_bid_ok:"Enchère placée !", auction_closed:"Cette enchère est terminée.", auction_bid_low:"Enchère trop basse.", auction_not_found:"Enchère introuvable.", auction_won:"Gagnant", pay_pending:"Paiement requis", err_auction_only:"Ce moment est une Seconde Prime — enchérissez dans la vente.", feed_title:"Fil en direct", top_title:"Les plus aimés", feed_empty:"Aucun message — réservez la première seconde.", top_empty:"Aucun like — soyez le premier.", next_broadcast:"Prochaine diffusion", live_label:"EN DIRECT", like_label:"J'aime", lang_label:"Langue", footer1:"OWN A SECOND — un prototype. © 2026", footer2:"Chaque seconde a un numéro. Chaque numéro peut avoir un propriétaire."
+  auction_title:"Secondes Prime — enchère en direct", auction_sub:"Les moments les plus rares de l'horloge. Enchérissez pour les posséder pour toujours.", auction_min:"Minimum", auction_current:"Enchère actuelle", auction_ends:"Fin", auction_bid_count:"enchères", auction_no_live:"Aucune enchère en direct pour le moment.", auction_place:"Enchérir", auction_your_name:"Votre nom / pseudo", auction_amount:"Montant de l'enchère (USD)", auction_submit:"Enchérir", auction_bid_ok:"Enchère placée !", auction_closed:"Cette enchère est terminée.", auction_bid_low:"Enchère trop basse.", auction_not_found:"Enchère introuvable.", auction_won:"Gagnant", pay_pending:"Paiement requis", err_auction_only:"Ce moment est une Seconde Prime — enchérissez dans la vente.", feed_title:"Fil en direct", top_title:"Les plus aimés", feed_empty:"Aucun message — réservez la première seconde.", top_empty:"Aucun like — soyez le premier.", next_broadcast:"Prochaine diffusion", live_label:"EN DIRECT", like_label:"J'aime", read_more:"Lire la suite", lang_label:"Langue", footer1:"OWN A SECOND — un prototype. © 2026", footer2:"Chaque seconde a un numéro. Chaque numéro peut avoir un propriétaire."
 },
 ar: {
   nav_how:"كيف يعمل", nav_pricing:"الأسعار", nav_story:"القصة", nav_claim:"احجز ثانية",
@@ -379,7 +379,7 @@ ar: {
   demo_title:"رسالتك بلغتهم", demo_sub:"اشترِ ثانية واختر من يراها: الجميع (تُترجم تلقائيًا) أو لغة محددة.",
   demo_lead:"إن اخترت «كل اللغات»، يرى المشاهد رسالتك بلغته:",
   demo_msg:"في هذه الثانية، أختارك أنت.",
-  auction_title:"الثواني المميزة — مزاد مباشر", auction_sub:"أندر لحظات الساعة. قدّم عرضًا لتمتلكها للأبد.", auction_min:"الحد الأدنى", auction_current:"العرض الحالي", auction_ends:"ينتهي", auction_bid_count:"عروض", auction_no_live:"لا مزادات مباشرة الآن.", auction_place:"قدّم عرضًا", auction_your_name:"اسمك / معرفك", auction_amount:"قيمة العرض (USD)", auction_submit:"تقديم العرض", auction_bid_ok:"تم تقديم العرض!", auction_closed:"انتهى هذا المزاد.", auction_bid_low:"العرض منخفض جدًا.", auction_not_found:"المزاد غير موجود.", auction_won:"الفائز", pay_pending:"الدفع مطلوب", err_auction_only:"تلك اللحظة ثانية مميزة — قدّم عرضًا في المزاد.", feed_title:"البث المباشر", top_title:"الأكثر إعجابًا", feed_empty:"لا رسائل بعد — احجز الثانية الأولى.", top_empty:"لا إعجابات بعد — كن الأول.", next_broadcast:"البث التالي", live_label:"مباشر", like_label:"أعجبني", lang_label:"اللغة", footer1:"OWN A SECOND — نموذج أولي. © 2026", footer2:"لكل ثانية رقم. ولكل رقم أن يكون له مالك."
+  auction_title:"الثواني المميزة — مزاد مباشر", auction_sub:"أندر لحظات الساعة. قدّم عرضًا لتمتلكها للأبد.", auction_min:"الحد الأدنى", auction_current:"العرض الحالي", auction_ends:"ينتهي", auction_bid_count:"عروض", auction_no_live:"لا مزادات مباشرة الآن.", auction_place:"قدّم عرضًا", auction_your_name:"اسمك / معرفك", auction_amount:"قيمة العرض (USD)", auction_submit:"تقديم العرض", auction_bid_ok:"تم تقديم العرض!", auction_closed:"انتهى هذا المزاد.", auction_bid_low:"العرض منخفض جدًا.", auction_not_found:"المزاد غير موجود.", auction_won:"الفائز", pay_pending:"الدفع مطلوب", err_auction_only:"تلك اللحظة ثانية مميزة — قدّم عرضًا في المزاد.", feed_title:"البث المباشر", top_title:"الأكثر إعجابًا", feed_empty:"لا رسائل بعد — احجز الثانية الأولى.", top_empty:"لا إعجابات بعد — كن الأول.", next_broadcast:"البث التالي", live_label:"مباشر", like_label:"أعجبني", read_more:"اقرأ المزيد", lang_label:"اللغة", footer1:"OWN A SECOND — نموذج أولي. © 2026", footer2:"لكل ثانية رقم. ولكل رقم أن يكون له مالك."
 },
 ja: {
   nav_how:"仕組み", nav_pricing:"料金", nav_story:"ストーリー", nav_claim:"秒を取得",
@@ -441,7 +441,7 @@ ja: {
   demo_title:"彼らの言語であなたのメッセージを", demo_sub:"秒を買って、誰が見るか選ぶ：全員（自動翻訳）または特定の言語。",
   demo_lead:"「すべての言語」を選ぶと、視聴者は自分の言語でメッセージを見ます：",
   demo_msg:"この一秒、私はあなたを選ぶ。",
-  auction_title:"プライム・セカンド — ライブオークション", auction_sub:"時計の最も希少な瞬間。永遠に所有するために入札しましょう。", auction_min:"最低額", auction_current:"現在の入札", auction_ends:"終了", auction_bid_count:"入札", auction_no_live:"現在ライブオークションはありません。", auction_place:"入札する", auction_your_name:"名前 / ハンドル", auction_amount:"入札額 (USD)", auction_submit:"入札", auction_bid_ok:"入札しました！", auction_closed:"このオークションは終了しました。", auction_bid_low:"入札額が低すぎます。", auction_not_found:"オークションが見つかりません。", auction_won:"落札者", pay_pending:"支払いが必要です", err_auction_only:"その瞬間はプライム・セカンドです — オークションで入札してください。", feed_title:"ライブフィード", top_title:"最も愛された", feed_empty:"まだメッセージはありません — 最初の秒を取得しましょう。", top_empty:"まだいいねはありません — 最初になりましょう。", next_broadcast:"次の放送", live_label:"ライブ", like_label:"いいね", lang_label:"言語", footer1:"OWN A SECOND — プロトタイプ。© 2026", footer2:"すべての秒には番号があります。すべての番号には持ち主がいられます。"
+  auction_title:"プライム・セカンド — ライブオークション", auction_sub:"時計の最も希少な瞬間。永遠に所有するために入札しましょう。", auction_min:"最低額", auction_current:"現在の入札", auction_ends:"終了", auction_bid_count:"入札", auction_no_live:"現在ライブオークションはありません。", auction_place:"入札する", auction_your_name:"名前 / ハンドル", auction_amount:"入札額 (USD)", auction_submit:"入札", auction_bid_ok:"入札しました！", auction_closed:"このオークションは終了しました。", auction_bid_low:"入札額が低すぎます。", auction_not_found:"オークションが見つかりません。", auction_won:"落札者", pay_pending:"支払いが必要です", err_auction_only:"その瞬間はプライム・セカンドです — オークションで入札してください。", feed_title:"ライブフィード", top_title:"最も愛された", feed_empty:"まだメッセージはありません — 最初の秒を取得しましょう。", top_empty:"まだいいねはありません — 最初になりましょう。", next_broadcast:"次の放送", live_label:"ライブ", like_label:"いいね", read_more:"続きを読む", lang_label:"言語", footer1:"OWN A SECOND — プロトタイプ。© 2026", footer2:"すべての秒には番号があります。すべての番号には持ち主がいられます。"
 }
 };
 
@@ -913,25 +913,50 @@ function buildFeedItem(c){
   meta.appendChild(who); meta.appendChild(when);
   div.appendChild(meta);
 
-  var full = tr.text;
   var msgEl = document.createElement('div');
   msgEl.className = 'feed-msg';
-  msgEl.textContent = truncate(full, 34);
-  msgEl.title = full;
-  msgEl.addEventListener('click', function(){
-    msgEl.textContent = (msgEl.textContent === full) ? truncate(full, 34) : full;
-  });
+  msgEl.textContent = tr.text;  // CSS clamps to 2 lines => ellipsis
   div.appendChild(msgEl);
+
+  var more = document.createElement('div');
+  more.className = 'feed-more';
+  more.textContent = t('read_more') + ' →';
+  div.appendChild(more);
 
   var likeBtn = document.createElement('button');
   likeBtn.className = 'like-btn';
   likeBtn.innerHTML = '❤ <span>' + (c.likes || 0) + '</span>';
   likeBtn.title = t('like_label');
-  likeBtn.addEventListener('click', function(){ doLike(c.id, likeBtn); });
+  likeBtn.addEventListener('click', function(ev){ ev.stopPropagation(); doLike(c.id, likeBtn); });
   div.appendChild(likeBtn);
 
+  div.addEventListener('click', function(){ openModal(c); });
   return div;
 }
+
+function openModal(c){
+  var tr = translateMsg(c);
+  $('modalBadge').textContent = c.type === 'one' ? t('badge_one') : (c.type === 'prime' ? t('badge_prime') : t('badge_forever'));
+  $('modalWho').textContent = c.name;
+  $('modalMsg').textContent = '“' + tr.text + '”';
+  $('modalWhen').textContent = c.daily ? (t('daily_suffix') + ' · ' + fmtTimeOfDay(c.timeOfDay || '')) : fmtUnix(c.at);
+  $('modalLikes').textContent = '❤ ' + (c.likes || 0);
+  var box = $('modalTranslations');
+  box.innerHTML = '';
+  if (c.translations){
+    Object.keys(c.translations).forEach(function(code){
+      if (code === tr.lang) return;
+      var row = document.createElement('div');
+      row.className = 'tr-row';
+      var l = document.createElement('span'); l.className = 'tr-lang'; l.textContent = (NATIVE_NAMES[code] || code);
+      var tx = document.createElement('span'); tx.className = 'tr-text'; tx.textContent = c.translations[code];
+      row.appendChild(l); row.appendChild(tx);
+      box.appendChild(row);
+    });
+  }
+  $('modalBackdrop').classList.add('open');
+}
+function closeModal(){ $('modalBackdrop').classList.remove('open'); }
 function feedEmpty(el, key){
   var d = document.createElement('div');
   d.className = 'feed-empty';
@@ -1033,6 +1058,10 @@ function init(){
 
   $('claimSubmit').addEventListener('click', submitClaim);
   $('claimNow').addEventListener('click', claimNextSecond);
+
+  $('modalClose').addEventListener('click', closeModal);
+  $('modalBackdrop').addEventListener('click', function(e){ if (e.target === this) closeModal(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeModal(); });
   var claimNextBtn = $('claimNext');
   if (claimNextBtn) claimNextBtn.addEventListener('click', claimNextSecond);
 
