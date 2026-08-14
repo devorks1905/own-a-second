@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OWN A SECOND — One clock. Everywhere. One second can be yours.</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:16px;flex-wrap:wrap">
+    <div class="logo">OWN&nbsp;<span>A SECOND</span></div>
+    <div class="nav-right">
+      <div class="links">
+        <a href="#claim" data-i18n="nav_claim">Claim a second</a>
+        <a href="#how" data-i18n="nav_how">How it works</a>
+        <a href="#pricing" data-i18n="nav_pricing">Pricing</a>
+        <a href="#ledger" data-i18n="ledger_title">The ledger</a>
+        <a href="#story" data-i18n="nav_story">Story</a>
+      </div>
+      <div class="langsel">
+        <span data-i18n="lang_label">Language</span>
+        <select id="langSelect" aria-label="Language">
+          <option value="en">English</option>
+          <option value="tr">Türkçe</option>
+          <option value="de">Deutsch</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="ar">العربية</option>
+          <option value="ja">日本語</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="kicker" data-i18n="kicker">One clock · Everywhere · Forever</div>
+    <h1><span data-i18n="title1">Own one second</span><br><span class="gold" data-i18n="title2">of the world.</span></h1>
+    <p class="sub" data-i18n="sub">There is one clock, ticking everywhere at once. Buy a second on it. When your second arrives, your message is shown to everyone — at the same moment, for exactly one second.</p>
+
+    <div class="clock-card">
+      <div class="clock-label" data-i18n="clock_label">Now · Coordinated Universal Time</div>
+      <div class="clock" id="clock">00:00:<span class="sec">00</span></div>
+      <div class="second-id">Second #<b id="unix">0</b> <span id="status" data-i18n="unclaimed">— unclaimed</span></div>
+      <div class="claimed">
+        <span data-i18n="clock_owned_by">Owned by</span> <span class="who" id="who">—</span>
+        <span class="langflag" id="langFlag" style="display:none"></span>
+        <span class="msg" id="msg" style="display:none"></span>
+      </div>
+      <button class="claim-now" id="claimNow" data-i18n="claim_now">Claim it now</button>
+    </div>
+
+    <div class="badge-demo" data-i18n="badge_demo">Demo mode · crypto checkout coming soon</div>
+  </div>
+
+  <section id="claim">
+    <div class="sec-title" data-i18n="claim_title">Claim a second</div>
+    <p class="sec-sub" data-i18n="claim_sub">Pick your moment, write your message, and it's yours.</p>
+
+    <div class="claim-panel">
+      <div class="price-line" id="priceLine"></div>
+
+      <div class="form-row">
+        <label data-i18n="claim_type_label">Type</label>
+        <div class="type-toggle" id="typeToggle">
+          <button type="button" data-type="one" class="active">
+            <span class="tt" data-i18n="claim_type_one_t">One Second</span>
+            <span class="td" data-i18n="claim_type_one_d">A single, dated moment</span>
+          </button>
+          <button type="button" data-type="forever">
+            <span class="tt" data-i18n="claim_type_forever_t">Forever Second</span>
+            <span class="td" data-i18n="claim_type_forever_d">Repeats every day</span>
+          </button>
+          <button type="button" data-type="prime">
+            <span class="tt" data-i18n="claim_type_prime_t">Prime Second</span>
+            <span class="td" data-i18n="claim_type_prime_d">Auction · bid now</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-row" id="whenOne">
+        <label data-i18n="claim_when_one">Exact moment (UTC)</label>
+        <input type="datetime-local" id="claimWhenOne">
+        <div class="hint"><button class="claim-now" type="button" id="claimNext" style="font-size:13px;padding:7px 14px" data-i18n="claim_next_btn">⚡ Claim the very next second</button></div>
+      </div>
+
+      <div class="form-row" id="whenForever" style="display:none">
+        <label data-i18n="claim_when_forever">Time of day (UTC · repeats daily)</label>
+        <input type="time" id="claimWhenForever">
+      </div>
+
+      <div class="form-row">
+        <label data-i18n="claim_message_label">Your message</label>
+        <textarea id="claimMessage" rows="3" maxlength="120" data-i18n-ph="claim_message_ph" placeholder="What the world sees for one second…"></textarea>
+        <div class="char-count" id="charCount">0 / 120 characters</div>
+      </div>
+
+      <div class="form-row">
+        <label data-i18n="claim_name_label">Your name / handle</label>
+        <input type="text" id="claimName" maxlength="40" data-i18n-ph="claim_name_ph" placeholder="e.g. @you">
+      </div>
+
+      <div class="form-row">
+        <label data-i18n="claim_audience_label">Who sees it in their language</label>
+        <select id="claimAudience">
+          <option value="all" data-i18n="claim_audience_all">Everyone — auto-translated into each viewer's language</option>
+        </select>
+        <div class="hint" data-i18n="claim_audience_specific">A specific language</div>
+      </div>
+
+      <div class="form-row">
+        <label style="text-transform:none">
+          <input type="checkbox" id="translationsToggle" style="width:auto;vertical-align:middle;margin-right:8px">
+          <span data-i18n="claim_translations_toggle">Provide my own translations (optional)</span>
+        </label>
+        <div class="hint" data-i18n="claim_translations_hint">Leave empty to use automatic translation</div>
+        <div class="translations" id="translationsBox"></div>
+      </div>
+
+      <button class="btn btn-primary claim-submit" id="claimSubmit" data-i18n="claim_submit">Claim this second</button>
+      <div class="form-error" id="claimError"></div>
+      <div class="form-ok" id="claimOk"></div>
+      <div class="demo-note" data-i18n="claim_demo_note">Demo: no payment is taken yet. Crypto checkout (USDT / USDC · TRC-20) is wired next.</div>
+    </div>
+
+    <div class="upcoming" id="upcomingList"></div>
+  </section>
+
+  <section id="how">
+    <div class="sec-title" data-i18n="how_title">Three steps. One second.</div>
+    <p class="sec-sub" data-i18n="how_sub">No account needed to understand it. You understand it in one second.</p>
+    <div class="steps">
+      <div class="step"><div class="num">01</div><h3 data-i18n="step1_t">Pick your second</h3><p data-i18n="step1_d">A birthday. A midnight. 11:11. Any moment that means something to you.</p></div>
+      <div class="step"><div class="num">02</div><h3 data-i18n="step2_t">Write your message</h3><p data-i18n="step2_d">Up to 120 characters. Whatever you want the world to see.</p></div>
+      <div class="step"><div class="num">03</div><h3 data-i18n="step3_t">Own the moment</h3><p data-i18n="step3_d">When your second hits, everyone sees it. Everywhere. At once.</p></div>
+    </div>
+    <div class="forever">
+      <div class="big" data-i18n="forever_line">A second never really passes. Choose a recurring second and it's yours — same moment, every day, forever.</div>
+      <p data-i18n="forever_sub">This is what makes a second worth more than a pixel: it keeps coming back.</p>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="sec-title" data-i18n="pricing_title">Own it your way</div>
+    <p class="sec-sub" data-i18n="pricing_sub">Suggested launch pricing. Prime seconds are auctioned.</p>
+    <div class="pricing">
+      <div class="tier">
+        <div class="tag" data-i18n="tier1_tag">One-time</div>
+        <h3 data-i18n="tier1_name">One Second</h3>
+        <div class="price">$9</div>
+        <div class="per" data-i18n="tier1_per">once · a single dated second</div>
+        <p data-i18n="tier1_d">Perfect for a birthday, an anniversary, a goodbye. Your message appears once — and is recorded forever.</p>
+        <a class="btn btn-ghost" href="#claim" data-i18n="cta_claim">Claim a second</a>
+      </div>
+      <div class="tier hot">
+        <div class="tag" data-i18n="tier2_tag">Recurring</div>
+        <h3 data-i18n="tier2_name">Forever Second</h3>
+        <div class="price">$29<span style="font-size:18px">/mo</span></div>
+        <div class="per" data-i18n="tier2_per">every day · same moment</div>
+        <p data-i18n="tier2_d">Your second repeats every single day. A moment that never stops being yours.</p>
+        <a class="btn btn-primary" href="#claim" data-i18n="btn_forever">Own a forever second</a>
+      </div>
+      <div class="tier">
+        <div class="tag" data-i18n="tier3_tag">Auction</div>
+        <h3 data-i18n="tier3_name">Prime Second</h3>
+        <div class="price">$bid</div>
+        <div class="per" data-i18n="tier3_per">rarest moments</div>
+        <p data-i18n="tier3_d">Midnight UTC. 11:11. New Year's Eve. The seconds everyone wants — decided by open auction.</p>
+        <a class="btn btn-ghost" href="#claim" data-i18n="btn_prime">Watch the auction</a>
+      </div>
+    </div>
+
+    <div class="crypto">
+      <div class="sec-title" style="font-size:26px" data-i18n="pay_title">Pay with stablecoins</div>
+      <p class="sec-sub" style="margin:8px auto 0" data-i18n="pay_sub">Prices are fixed in US dollars. Pay the exact amount in USDT or USDC.</p>
+      <div class="coins">
+        <div class="coin"><b>₮</b> USDT</div>
+        <div class="coin"><b>◎</b> USDC</div>
+      </div>
+      <div class="note" data-i18n="pay_note">Non-custodial checkout. You pay the exact price — network fees are on us. (TRC-20)</div>
+    </div>
+  </section>
+
+  <section id="ledger">
+    <div class="sec-title" data-i18n="ledger_title">The ledger</div>
+    <p class="sec-sub" data-i18n="ledger_sub">Every second that has an owner. Forever seconds repeat daily.</p>
+    <div class="ledger" id="ledgerList"></div>
+  </section>
+
+  <section id="auction">
+    <div class="sec-title" data-i18n="auction_title">Prime Seconds — live auction</div>
+    <p class="sec-sub" data-i18n="auction_sub">The rarest moments of the clock. Bid to own them forever.</p>
+    <div class="auction-list" id="auctionList"></div>
+  </section>
+
+  <section id="lang">
+    <div class="sec-title" data-i18n="demo_title">See your message in their language</div>
+    <p class="sec-sub" data-i18n="demo_sub">Buy a second and choose who sees it: everyone (auto-translated) or a specific language.</p>
+    <div class="demo">
+      <div class="lead" data-i18n="demo_lead">If you choose “All languages”, a viewer sees your message in their own language:</div>
+      <div id="demoGrid"></div>
+    </div>
+  </section>
+
+  <section id="story">
+    <div class="story">
+      <blockquote data-i18n="story_quote">"In 2005, a student sold one million pixels for a dollar each and made a million dollars. The lesson wasn't the pixels. It was that the most valuable thing on Earth is attention — and time."</blockquote>
+      <div class="from" data-i18n="story_from">OWN A SECOND takes that idea to the only asset that never runs out: the clock itself.</div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="grid">
+      <div data-i18n="footer1">OWN A SECOND — a prototype. © 2026</div>
+      <div data-i18n="footer2">Every second has a number. Every number can have an owner.</div>
+    </div>
+  </div>
+</footer>
+
+<script src="/app.js"></script>
+</body>
+</html>
