@@ -282,9 +282,9 @@ function publicClaim(c) {
     priceUsd: c.priceUsd, claimedAt: c.claimedAt, payment: c.payment || null, likes: c.likes || 0 };
 }
 
-// ---------- likes (no accounts yet — soft signal, rate-limited per IP) ----------
+// ---------- likes (no accounts yet — soft signal, generous rate limit) ----------
 const likeWindows = new Map();
-const LIKE_LIMIT_PER_HOUR = 30;
+const LIKE_LIMIT_PER_HOUR = 200;
 function clientIp(req) {
   const fwd = req.headers['x-forwarded-for'];
   if (fwd) return String(fwd).split(',')[0].trim();
@@ -292,6 +292,7 @@ function clientIp(req) {
 }
 function likeAllowed(ip) {
   const now = Date.now();
+  if (likeWindows.size > 20000) likeWindows.clear();
   const w = likeWindows.get(ip);
   if (!w || now > w.resetAt) { likeWindows.set(ip, { count: 1, resetAt: now + 3600000 }); return true; }
   if (w.count >= LIKE_LIMIT_PER_HOUR) return false;
@@ -303,11 +304,12 @@ function findClaimById(id) {
   for (const k in store.forever) if (store.forever[k].id === id) return store.forever[k];
   return null;
 }
-function doLike(id, ip) {
+function doLike(id, ip, delta) {
   const c = findClaimById(id);
   if (!c) return { code: 'NOT_FOUND' };
   if (!likeAllowed(ip)) return { code: 'RATE_LIMITED' };
-  c.likes = (c.likes || 0) + 1;
+  const d = delta === -1 ? -1 : 1;
+  c.likes = Math.max(0, (c.likes || 0) + d);
   persist();
   broadcast({ type: 'like', claimId: id, likes: c.likes });
   return { ok: true, likes: c.likes };
@@ -714,7 +716,7 @@ function handleApi(req, res, pathname) {
   }
   if (req.method === 'POST' && pathname === '/api/like') {
     return readBody(req, (body) => {
-      const r = doLike(body && body.claimId, clientIp(req));
+      const r = doLike(body && body.claimId, clientIp(req), body && body.delta);
       if (r.ok) return sendJson(res, 200, r);
       const status = r.code === 'RATE_LIMITED' ? 429 : 404;
       return sendJson(res, status, { ok: false, code: r.code });

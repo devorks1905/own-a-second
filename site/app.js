@@ -929,7 +929,8 @@ function buildFeedItem(c){
   likeBtn.className = 'like-btn';
   likeBtn.innerHTML = '❤ <span>' + (c.likes || 0) + '</span>';
   likeBtn.title = t('like_label');
-  likeBtn.addEventListener('click', function(ev){ ev.stopPropagation(); doLike(c.id, likeBtn); });
+  likeBtn.className = 'like-btn' + (isLiked(c.id) ? ' liked' : '');
+  likeBtn.addEventListener('click', function(ev){ ev.stopPropagation(); toggleLike(c.id, likeBtn); });
   div.appendChild(likeBtn);
 
   div.addEventListener('click', function(){ openModal(c); });
@@ -988,6 +989,36 @@ function doLike(claimId, btn){
     if (res.ok && btn){ var sp = btn.querySelector('span'); if (sp) sp.textContent = res.likes; }
     refreshTop();
   }).catch(function(){});
+}
+// ----- like state (per-user, localStorage) -----
+function loadLiked(){ try { return JSON.parse(localStorage.getItem('oas-liked') || '{}'); } catch(e){ return {}; } }
+function saveLiked(map){ try { localStorage.setItem('oas-liked', JSON.stringify(map)); } catch(e){} }
+var likedMap = loadLiked();
+function isLiked(id){ return !!likedMap[id]; }
+function updateLikeBtn(btn, likes, liked){
+  if (!btn) return;
+  var sp = btn.querySelector('span'); if (sp) sp.textContent = likes;
+  if (liked) btn.classList.add('liked'); else btn.classList.remove('liked');
+  btn.classList.remove('pop'); void btn.offsetWidth; btn.classList.add('pop');
+}
+function toggleLike(claimId, btn){
+  var liked = isLiked(claimId);
+  var delta = liked ? -1 : 1;
+  fetch('/api/like', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ claimId: claimId, delta: delta }) })
+  .then(function(r){ return r.json(); })
+  .then(function(res){
+    if (res.ok){
+      likedMap[claimId] = !liked;
+      saveLiked(likedMap);
+      updateLikeBtn(btn, res.likes, !liked);
+      refreshTop();
+    } else {
+      if (btn){ btn.classList.add('shake'); setTimeout(function(){ btn.classList.remove('shake'); }, 400); }
+    }
+  }).catch(function(){
+    if (btn){ btn.classList.add('shake'); setTimeout(function(){ btn.classList.remove('shake'); }, 400); }
+  });
 }
 function refreshTop(){
   fetch('/api/top').then(function(r){ return r.json(); }).then(function(d){
