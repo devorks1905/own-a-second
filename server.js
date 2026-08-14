@@ -100,22 +100,33 @@ function seed() {
       claimedAt: Date.now(), payment: 'demo'
     });
     // NOTE: prime slot 00:00:00 is auctioned now — NOT seeded as a fixed claim.
-    store.forever['08:08:00'] = mk('oas-seed-1', '08:08:00', '@wish', 'Make a wish.', 'forever');
-    store.forever['07:07:00'] = mk('oas-seed-3', '07:07:00', '@morning', 'Rise and shine — the world just handed you another 86,400 seconds. Spend them well.', 'forever');
-    store.forever['13:37:00'] = mk('oas-seed-4', '13:37:00', '@crypto', 'We are all gonna make it. Diamond hands, forever — this second is proof.', 'forever');
-    store.forever['20:00:00'] = mk('oas-seed-2', '20:00:00', '@aida', 'This second, I choose you.', 'forever', {
-      en: 'This second, I choose you.', tr: 'Bu saniyede, seni seçiyorum.', de: 'In dieser Sekunde wähle ich dich.',
-      es: 'En este segundo, te elijo a ti.', fr: 'Cette seconde, je te choisis.',
-      ar: 'في هذه الثانية، أختارك أنت.', ja: 'この一秒、私はあなたを選ぶ。'
+    // [timeOfDay, handle, message, translations, likes]
+    const SEED = [
+      ['06:06:00', '@sunrise', 'Every sunrise is a second chance. Here is yours.', null, 6],
+      ['07:07:00', '@morning', 'Rise and shine — the world just handed you another 86,400 seconds. Spend them well.', null, 4],
+      ['08:08:00', '@wish', 'Make a wish.', null, 7],
+      ['09:09:00', '@focus', 'One deep breath. You have exactly one second — make it yours.', null, 5],
+      ['10:10:00', '@smile', 'Someone, somewhere, is smiling at this exact second. Pass it on.', null, 8],
+      ['12:34:00', '@sync', '12:34 — the second the whole world glances at the clock and smiles.', null, 11],
+      ['13:37:00', '@crypto', 'We are all gonna make it. Diamond hands, forever — this second is proof.', null, 9],
+      ['15:15:00', '@coffee', 'Pause. Look up from the screen. This second will never come back.', null, 3],
+      ['17:17:00', '@grateful', 'Thank the people who believed in you — right now, this second.', null, 10],
+      ['18:18:00', '@home', 'Coming home never felt this exact. 18:18:18, forever.', null, 6],
+      ['20:00:00', '@aida', 'This second, I choose you.', {
+        en: 'This second, I choose you.', tr: 'Bu saniyede, seni seçiyorum.', de: 'In dieser Sekunde wähle ich dich.',
+        es: 'En este segundo, te elijo a ti.', fr: 'Cette seconde, je te choisis.',
+        ar: 'في هذه الثانية، أختارك أنت.', ja: 'この一秒、私はあなたを選ぶ。'
+      }, 12],
+      ['21:21:00', '@dreamer', 'One day the whole world will read these exact words at the exact same second.', null, 15],
+      ['22:22:00', '@night', 'Make the same wish you made this morning. It is still counting.', null, 8]
+    ];
+    SEED.forEach(function (s, i) {
+      const claim = mk('oas-seed-' + (i + 1), s[0], s[1], s[2], 'forever', s[3]);
+      claim.likes = s[4];
+      store.forever[s[0]] = claim;
     });
-    store.forever['21:21:00'] = mk('oas-seed-5', '21:21:00', '@dreamer', 'One day the whole world will read these exact words at the exact same second.', 'forever');
-    store.forever['08:08:00'].likes = 7;
-    store.forever['20:00:00'].likes = 12;
-    store.forever['13:37:00'].likes = 9;
-    store.forever['07:07:00'].likes = 4;
-    store.forever['21:21:00'].likes = 15;
-    store.stats.claims = 5;
-    store.stats.revenueUsd = CONFIG.pricesUsd.forever * 5;
+    store.stats.claims = SEED.length;
+    store.stats.revenueUsd = CONFIG.pricesUsd.forever * SEED.length;
     dirty = true;
   }
   // seed auctions for configured prime slots (if not present)

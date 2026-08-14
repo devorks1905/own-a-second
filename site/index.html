@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OWN A SECOND — One clock. Everywhere. One second can be yours.</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -43,7 +44,7 @@
     <p class="sub" data-i18n="sub">There is one clock, ticking everywhere at once. Buy a second on it. When your second arrives, your message is shown to everyone — at the same moment, for exactly one second.</p>
 
     <div class="clock-card">
-      <div class="clock-label"><span data-i18n="clock_label">Now · Coordinated Universal Time</span><span class="live-badge"><span class="live-dot"></span><span data-i18n="live_label">LIVE</span></span></div>
+      <div class="clock-label"><span data-i18n="clock_label">Now · Coordinated Universal Time</span><span class="clock-label-right"><button class="sound-toggle" id="soundToggle" type="button" aria-label="Toggle sound">🔊</button><span class="live-badge"><span class="live-dot"></span><span data-i18n="live_label">LIVE</span></span></span></div>
       <div class="clock" id="clock">00:00:<span class="sec">00</span></div>
       <div class="second-id">Second #<b id="unix">0</b> <span id="status" data-i18n="unclaimed">— unclaimed</span></div>
       <div class="countdown" id="countdown"></div>
