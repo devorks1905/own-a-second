@@ -907,7 +907,7 @@ function truncateMessage(text){
 function buildFeedItem(c){
   var tr = translateMsg(c);
   var div = document.createElement('div');
-  div.className = 'feed-item';
+  div.className = 'feed-item tiltable';
 
   var meta = document.createElement('div');
   meta.className = 'feed-meta';
@@ -937,13 +937,19 @@ function buildFeedItem(c){
   return div;
 }
 
+var modalClaimId = null;
 function openModal(c){
   var tr = translateMsg(c);
+  modalClaimId = c.id;
   $('modalBadge').textContent = c.type === 'one' ? t('badge_one') : (c.type === 'prime' ? t('badge_prime') : t('badge_forever'));
   $('modalWho').textContent = c.name;
   $('modalMsg').textContent = '“' + tr.text + '”';
   $('modalWhen').textContent = c.daily ? (t('daily_suffix') + ' · ' + fmtTimeOfDay(c.timeOfDay || '')) : fmtUnix(c.at);
-  $('modalLikes').textContent = '❤ ' + (c.likes || 0);
+  $('modalLikes').textContent = c.likes || 0;
+  var likeBtn = $('modalLikeBtn');
+  if (likeBtn) {
+    likeBtn.classList.toggle('liked', isLiked(c.id));
+  }
   var box = $('modalTranslations');
   box.innerHTML = '';
   if (c.translations){
@@ -1135,6 +1141,7 @@ function init(){
 
   $('modalClose').addEventListener('click', closeModal);
   $('modalBackdrop').addEventListener('click', function(e){ if (e.target === this) closeModal(); });
+  $('modalLikeBtn').addEventListener('click', function(){ if (modalClaimId) toggleLike(modalClaimId, $('modalLikeBtn')); });
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeModal(); });
   var claimNextBtn = $('claimNext');
   if (claimNextBtn) claimNextBtn.addEventListener('click', claimNextSecond);

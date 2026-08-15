@@ -9,6 +9,9 @@
 </head>
 <body>
 
+<canvas id="fxCanvas"></canvas>
+<div id="cursorGlow"></div>
+
 <nav>
   <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:16px;flex-wrap:wrap">
     <div class="logo">OWN&nbsp;<span>A SECOND</span></div>
@@ -49,7 +52,7 @@
         <div class="feed" id="topList"></div>
       </div>
 
-      <div class="clock-card">
+      <div class="clock-card tiltable">
       <div class="clock-label"><span data-i18n="clock_label">Now · Coordinated Universal Time</span><span class="clock-label-right"><button class="sound-toggle" id="soundToggle" type="button" aria-label="Toggle sound">🔊</button><span class="live-badge"><span class="live-dot"></span><span data-i18n="live_label">LIVE</span></span></span></div>
       <div class="clock" id="clock">00:00:<span class="sec">00</span></div>
       <div class="second-id">Second #<b id="unix">0</b> <span id="status" data-i18n="unclaimed">— unclaimed</span></div>
@@ -71,7 +74,7 @@
     <div class="badge-demo" data-i18n="badge_demo">Demo mode · crypto checkout coming soon</div>
   </div>
 
-  <section id="claim">
+  <section id="claim" class="reveal">
     <div class="sec-title" data-i18n="claim_title">Claim a second</div>
     <p class="sec-sub" data-i18n="claim_sub">Pick your moment, write your message, and it's yours.</p>
 
@@ -144,7 +147,7 @@
     <div class="upcoming" id="upcomingList"></div>
   </section>
 
-  <section id="how">
+  <section id="how" class="reveal">
     <div class="sec-title" data-i18n="how_title">Three steps. One second.</div>
     <p class="sec-sub" data-i18n="how_sub">No account needed to understand it. You understand it in one second.</p>
     <div class="steps">
@@ -158,7 +161,7 @@
     </div>
   </section>
 
-  <section id="pricing">
+  <section id="pricing" class="reveal">
     <div class="sec-title" data-i18n="pricing_title">Own it your way</div>
     <p class="sec-sub" data-i18n="pricing_sub">Suggested launch pricing. Prime seconds are auctioned.</p>
     <div class="pricing">
@@ -199,19 +202,19 @@
     </div>
   </section>
 
-  <section id="ledger">
+  <section id="ledger" class="reveal">
     <div class="sec-title" data-i18n="ledger_title">The ledger</div>
     <p class="sec-sub" data-i18n="ledger_sub">Every second that has an owner. Forever seconds repeat daily.</p>
     <div class="ledger" id="ledgerList"></div>
   </section>
 
-  <section id="auction">
+  <section id="auction" class="reveal">
     <div class="sec-title" data-i18n="auction_title">Prime Seconds — live auction</div>
     <p class="sec-sub" data-i18n="auction_sub">The rarest moments of the clock. Bid to own them forever.</p>
     <div class="auction-list" id="auctionList"></div>
   </section>
 
-  <section id="lang">
+  <section id="lang" class="reveal">
     <div class="sec-title" data-i18n="demo_title">See your message in their language</div>
     <p class="sec-sub" data-i18n="demo_sub">Buy a second and choose who sees it: everyone (auto-translated) or a specific language.</p>
     <div class="demo">
@@ -220,7 +223,7 @@
     </div>
   </section>
 
-  <section id="story">
+  <section id="story" class="reveal">
     <div class="story">
       <blockquote data-i18n="story_quote">"In 2005, a student sold one million pixels for a dollar each and made a million dollars. The lesson wasn't the pixels. It was that the most valuable thing on Earth is attention — and time."</blockquote>
       <div class="from" data-i18n="story_from">OWN A SECOND takes that idea to the only asset that never runs out: the clock itself.</div>
@@ -256,12 +259,13 @@
     <div class="modal-msg" id="modalMsg"></div>
     <div class="modal-meta">
       <span id="modalWhen"></span>
-      <span id="modalLikes"></span>
+      <button class="like-btn modal-like-btn" id="modalLikeBtn">❤ <span id="modalLikes">0</span></button>
     </div>
     <div class="modal-translations" id="modalTranslations"></div>
   </div>
 </div>
 
 <script src="/app.js"></script>
+<script src="/fx.js"></script>
 </body>
 </html>

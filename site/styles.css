@@ -152,7 +152,10 @@ section{padding:56px 0}
 .modal-badge{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(240,180,41,.35);border-radius:999px;padding:3px 12px;display:inline-block;margin-bottom:14px}
 .modal-who{font-size:16px;font-weight:700;color:var(--gold);margin-bottom:6px}
 .modal-msg{font-size:22px;font-weight:600;line-height:1.4;font-style:italic;margin-bottom:18px}
-.modal-meta{font-family:var(--mono);font-size:12px;color:var(--mut);border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.modal-meta{font-family:var(--mono);font-size:12px;color:var(--mut);border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.modal-like-btn{position:static;border:1px solid var(--line2);border-radius:999px;background:transparent;color:var(--txt);font-size:13px;padding:7px 16px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.15s}
+.modal-like-btn:hover{border-color:var(--red);color:var(--red);transform:scale(1.06)}
+.modal-like-btn.liked{color:var(--red);border-color:rgba(251,113,133,.5);background:rgba(251,113,133,.08)}
 .modal-translations{margin-top:16px;border-top:1px solid var(--line);padding-top:14px}
 .modal-translations .tr-row{display:flex;gap:10px;padding:5px 0;font-size:14px}
 .modal-translations .tr-lang{font-family:var(--mono);font-size:11px;color:var(--gold);min-width:80px}
@@ -280,3 +283,43 @@ section{padding:56px 0}
 footer{border-top:1px solid var(--line);padding:40px 0 56px;color:var(--mut);font-size:13px}
 footer .grid{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 @media(max-width:780px){.links{display:none!important}}
+
+/* ============================================================
+   AI-ERA "LIQUID GLASS + SPATIAL" FX (2026 trends)
+   ============================================================ */
+
+/* --- particle canvas (moments in time) --- */
+#fxCanvas{position:fixed;inset:0;z-index:-1;pointer-events:none}
+
+/* --- custom cursor glow (desktop only) --- */
+#cursorGlow{position:fixed;top:0;left:0;width:520px;height:520px;margin:-260px 0 0 -260px;
+  border-radius:50%;pointer-events:none;z-index:1;
+  background:radial-gradient(circle,rgba(240,180,41,.10),rgba(240,180,41,.04) 40%,transparent 65%);
+  opacity:0;transition:opacity .5s}
+@media (hover:none){#cursorGlow{display:none}}
+
+/* --- scroll reveal --- */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal[data-delay="1"]{transition-delay:.08s}
+.reveal[data-delay="2"]{transition-delay:.16s}
+.reveal[data-delay="3"]{transition-delay:.24s}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+/* --- kinetic hero entrance (i18n-safe) --- */
+h1{animation:h1In 1s var(--ease) both}
+@keyframes h1In{from{opacity:0;transform:translateY(.5em);filter:blur(10px)}to{opacity:1;transform:none;filter:none}}
+
+/* --- magnetic tilt targets --- */
+.tiltable{will-change:transform;transform-style:preserve-3d;transition:transform .25s var(--ease)}
+.tiltable:hover{transition:transform .08s linear}
+
+/* --- liquid glass upgrade: shine sweep on cards --- */
+.clock-card::after,.claim-panel::after{content:"";position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.06) 45%,transparent 60%);
+  background-size:250% 100%;animation:sweep 7s var(--ease) infinite;pointer-events:none}
+@keyframes sweep{0%{background-position:120% 0}60%,100%{background-position:-120% 0}}
+
+/* --- soft focus vignette --- */
+html::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.5) 100%)}
