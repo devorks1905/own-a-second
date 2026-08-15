@@ -27,9 +27,9 @@
   ],
   "paymentEnabled": false,
   "storage": {
-    "mode": "file",
-    "supabaseUrl": "",
-    "supabaseAnonKey": "",
+    "mode": "supabase",
+    "supabaseUrl": "https://yhokscljhyxfkmlgocic.supabase.co",
+    "supabaseAnonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlob2tzY2xqaHl4ZmttbGdvY2ljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3ODE1MzIsImV4cCI6MjEwMjM1NzUzMn0.duzGqHmxJrR6xattwBpbQjhV67pk-l7MuWY2aWfF1cA",
     "supabaseServiceRoleKey": ""
   },
   "tickMs": 1000,

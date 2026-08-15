@@ -51,6 +51,11 @@ CONFIG.auction = Object.assign({}, DEFAULT_CONFIG.auction, CONFIG.auction || {})
 const PORT = Number(process.env.PORT) || CONFIG.port;
 const HOST = '0.0.0.0';
 
+// --- storage backend (file | supabase) ---
+const SUPABASE_URL = process.env.SUPABASE_URL || (CONFIG.storage && CONFIG.storage.supabaseUrl) || '';
+const SUPABASE_SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE_KEY || (CONFIG.storage && CONFIG.storage.supabaseServiceRoleKey) || '';
+const STORAGE_MODE = process.env.STORAGE_MODE || (CONFIG.storage && CONFIG.storage.mode) || 'file';
+
 function loadJson(file, fallback) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); }
   catch (e) { return fallback; }
@@ -88,7 +93,57 @@ if (!store.auctions) store.auctions = {};
 if (!store.invoices) store.invoices = {};
 if (!store.pending) store.pending = {};
 
-function persist() { saveJson(DATA_FILE, store); }
+function persist() { saveJson(DATA_FILE, store); upsertToSupabase(); }
+
+// --- Supabase (PostgREST) helpers ---
+function supabaseRequest(method, path, body) {
+  return new Promise((resolve, reject) => {
+    if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE) return reject(new Error('supabase not configured'));
+    const url = SUPABASE_URL + '/rest/v1/' + path;
+    const headers = {
+      'apikey': SUPABASE_SERVICE_ROLE,
+      'Authorization': 'Bearer ' + SUPABASE_SERVICE_ROLE,
+      'Content-Type': 'application/json'
+    };
+    if (method === 'POST' || method === 'PATCH') headers['Prefer'] = 'resolution=merge-duplicates';
+    const req = https.request(url, { method, headers, timeout: 6000 }, (res) => {
+      let d = '';
+      res.on('data', (c) => { d += c; });
+      res.on('end', () => {
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          try { resolve(d ? JSON.parse(d) : {}); } catch (e) { resolve({}); }
+        } else reject(new Error('supabase ' + res.statusCode + ' ' + d.slice(0, 160)));
+      });
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('supabase timeout')); });
+    if (body) req.write(JSON.stringify(body));
+    req.end();
+  });
+}
+function statePayload() {
+  return { claims: store.claims, forever: store.forever, stats: store.stats,
+    idCounter: store.idCounter, auctions: store.auctions, invoices: store.invoices };
+}
+function upsertToSupabase() {
+  if (STORAGE_MODE !== 'supabase' || !SUPABASE_URL) return;
+  supabaseRequest('POST', 'app_state?on_conflict=id', { id: 1, data: statePayload() })
+    .catch((e) => console.error('[oas] supabase upsert error:', e.message));
+}
+async function loadFromSupabase() {
+  if (STORAGE_MODE !== 'supabase' || !SUPABASE_URL) return null;
+  try {
+    const rows = await supabaseRequest('GET', 'app_state?id=eq.1&select=data', null);
+    const data = rows && rows[0] && rows[0].data;
+    if (data && data.stats && (data.stats.claims > 0 || Object.keys(data.claims || {}).length > 0 || Object.keys(data.forever || {}).length > 0)) {
+      return data;
+    }
+    return null;
+  } catch (e) {
+    console.error('[oas] supabase load error:', e.message);
+    return null;
+  }
+}
 
 function seed() {
   let dirty = false;
@@ -234,7 +289,6 @@ function seed() {
   }
   if (dirty) persist();
 }
-seed();
 
 // ---------- 3. claims ----------
 function resolveCurrent(unix) {
@@ -757,8 +811,29 @@ const server = http.createServer(function (req, res) {
   return sendJson(res, 405, { ok: false, code: 'METHOD' });
 });
 
-server.listen(PORT, HOST, function () {
-  console.log('[oas] OWN A SECOND server listening on http://' + HOST + ':' + PORT);
-  console.log('[oas] paymentEnabled =', CONFIG.paymentEnabled, '| translate.provider =', CONFIG.translation.provider);
-  console.log('[oas] auction slots =', CONFIG.auction.slots.map((s) => s.slot).join(', '));
-});
+(async function boot() {
+  if (STORAGE_MODE === 'supabase' && SUPABASE_URL) {
+    const remote = await loadFromSupabase();
+    if (remote) {
+      store.claims = remote.claims || {};
+      store.forever = remote.forever || {};
+      store.stats = remote.stats || { claims: 0, revenueUsd: 0 };
+      store.idCounter = remote.idCounter || 0;
+      store.auctions = remote.auctions || {};
+      store.invoices = remote.invoices || {};
+      store.pending = {};
+      seed(); // ensures auction slots exist; won't re-seed claims (stats.claims > 0)
+      console.log('[oas] loaded from Supabase (claims=' + store.stats.claims + ')');
+    } else {
+      seed();
+      console.log('[oas] Supabase empty — seeded fresh');
+    }
+  } else {
+    seed();
+  }
+  server.listen(PORT, HOST, function () {
+    console.log('[oas] OWN A SECOND server listening on http://' + HOST + ':' + PORT);
+    console.log('[oas] storage =', STORAGE_MODE, '| paymentEnabled =', CONFIG.paymentEnabled, '| translate =', CONFIG.translation.provider);
+    console.log('[oas] auction slots =', CONFIG.auction.slots.map((s) => s.slot).join(', '));
+  });
+})();
