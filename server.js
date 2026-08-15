@@ -41,12 +41,14 @@ const DEFAULT_CONFIG = {
   payment: { network: 'trc20', receiveAddress: '', usdtContract: '', usdcContract: '',
     tronGridBase: 'https://api.trongrid.io', invoiceExpirySeconds: 900, verifyIntervalMs: 15000, simulateEnabled: false },
   translation: { provider: 'mymemory', deeplApiKey: '', googleApiKey: '' },
-  auction: { slots: [], defaultDurationHours: 72, bidIncrementUsd: 10 }
+  auction: { slots: [], defaultDurationHours: 72, bidIncrementUsd: 10 },
+  moderation: { mode: 'filter', bannedWords: [], claimRateLimitPerHour: 20 }
 };
 const CONFIG = Object.assign({}, DEFAULT_CONFIG, loadJson(CONFIG_FILE, {}));
 CONFIG.payment = Object.assign({}, DEFAULT_CONFIG.payment, CONFIG.payment || {});
 CONFIG.translation = Object.assign({}, DEFAULT_CONFIG.translation, CONFIG.translation || {});
 CONFIG.auction = Object.assign({}, DEFAULT_CONFIG.auction, CONFIG.auction || {});
+CONFIG.moderation = Object.assign({}, DEFAULT_CONFIG.moderation, CONFIG.moderation || {});
 
 const PORT = Number(process.env.PORT) || CONFIG.port;
 const HOST = '0.0.0.0';
@@ -82,7 +84,7 @@ function nextOccurrence(tod, afterUnix) {
 // ---------- 2. store ----------
 function emptyStore() {
   return { claims: {}, forever: {}, stats: { claims: 0, revenueUsd: 0 }, idCounter: 0,
-    auctions: {}, invoices: {}, pending: {} };
+    auctions: {}, invoices: {}, pending: {}, reports: {}, moderationLog: [] };
 }
 let store = loadJson(DATA_FILE, emptyStore());
 if (!store.claims) store.claims = {};
@@ -92,6 +94,8 @@ if (!store.idCounter) store.idCounter = 0;
 if (!store.auctions) store.auctions = {};
 if (!store.invoices) store.invoices = {};
 if (!store.pending) store.pending = {};
+if (!store.reports) store.reports = {};
+if (!store.moderationLog) store.moderationLog = [];
 
 function persist() { saveJson(DATA_FILE, store); upsertToSupabase(); }
 
@@ -336,6 +340,40 @@ function publicClaim(c) {
     priceUsd: c.priceUsd, claimedAt: c.claimedAt, payment: c.payment || null, likes: c.likes || 0 };
 }
 
+// ---------- moderation ----------
+const claimWindows = new Map();
+function claimRateAllowed(ip) {
+  const now = Date.now();
+  const limit = CONFIG.moderation.claimRateLimitPerHour || 20;
+  const w = claimWindows.get(ip);
+  if (!w || now > w.resetAt) { claimWindows.set(ip, { count: 1, resetAt: now + 3600000 }); return true; }
+  if (w.count >= limit) return false;
+  w.count += 1;
+  return true;
+}
+function scanText(text) {
+  // returns list of banned tokens found (case-insensitive, word-boundary aware)
+  const lower = (' ' + (text || '').toLowerCase() + ' ');
+  const hits = [];
+  for (const w of (CONFIG.moderation.bannedWords || [])) {
+    const wl = w.toLowerCase().trim();
+    if (!wl) continue;
+    if (lower.includes(' ' + wl) || lower.includes(wl + ' ')) hits.push(wl);
+  }
+  return hits;
+}
+function moderate(text, name) {
+  // returns { ok, code, hits }
+  const hits = scanText(text).concat(scanText(name));
+  const unique = [...new Set(hits)];
+  if (unique.length) return { ok: false, code: 'MODERATED', hits: unique };
+  return { ok: true, hits: [] };
+}
+function logModeration(entry) {
+  store.moderationLog.push(Object.assign({ at: Date.now() }, entry));
+  if (store.moderationLog.length > 500) store.moderationLog = store.moderationLog.slice(-500);
+}
+
 // ---------- likes (no accounts yet — soft signal, generous rate limit) ----------
 const likeWindows = new Map();
 const LIKE_LIMIT_PER_HOUR = 200;
@@ -384,6 +422,11 @@ function validateClaim(body) {
   if (!message || message.length > CONFIG.maxMessageChars) return { code: 'INVALID_MESSAGE' };
   const audience = body.audience;
   if (audience !== 'all' && CONFIG.languages.indexOf(audience) === -1) return { code: 'INVALID_AUDIENCE' };
+  const mod = moderate(message, name);
+  if (!mod.ok) {
+    logModeration({ type: 'blocked', name, message, hits: mod.hits });
+    return { code: 'MODERATED' };
+  }
   let translations = null;
   if (body.translations && typeof body.translations === 'object') {
     translations = {};
@@ -425,7 +468,8 @@ function commitClaim(claim, payment) {
   broadcast({ type: 'claim', claim: publicClaim(claim) });
   return publicClaim(claim);
 }
-async function doClaim(body) {
+async function doClaim(body, ip) {
+  if (!claimRateAllowed(ip || 'unknown')) return { code: 'RATE_LIMITED' };
   const v = validateClaim(body);
   if (!v.ok) return v;
   const claim = buildClaimObj(v.claim);
@@ -505,8 +549,11 @@ function publicInvoice(i) {
   return { id: i.id, amountUsd: i.amountUsd, address: CONFIG.payment.receiveAddress,
     network: CONFIG.payment.network, expiresAt: i.expiresAt, paid: i.paid, txId: i.txId || null };
 }
-function createInvoice(claimId, amountUsd) {
+function createInvoice(claimId, baseAmountUsd) {
   const id = 'inv-' + crypto.randomBytes(6).toString('hex');
+  // unique cents: makes every payment on-chain distinguishable for reconciliation
+  const cents = Math.floor(Math.random() * 90) + 10; // $0.10..$0.99
+  const amountUsd = Number((Math.floor(baseAmountUsd * 100) + cents) / 100);
   const inv = { id, claimId, amountUsd, createdAt: Date.now(),
     expiresAt: nowUnix() + CONFIG.payment.invoiceExpirySeconds, paid: false, txId: null };
   store.invoices[id] = inv;
@@ -736,9 +783,9 @@ function handleApi(req, res, pathname) {
   }
   if (req.method === 'POST' && pathname === '/api/claim') {
     return readBody(req, (body) => {
-      doClaim(body).then((r) => {
+      doClaim(body, clientIp(req)).then((r) => {
         if (r.ok) return sendJson(res, 200, r);
-        const status = { CONFLICT: 409, AUCTION_ONLY: 409, INVALID_JSON: 400 }[r.code] || 400;
+        const status = { CONFLICT: 409, AUCTION_ONLY: 409, INVALID_JSON: 400, MODERATED: 422, RATE_LIMITED: 429 }[r.code] || 400;
         return sendJson(res, status, { ok: false, code: r.code });
       }).catch((e) => {
         console.error('[oas] claim error:', e && e.message);
@@ -767,6 +814,24 @@ function handleApi(req, res, pathname) {
       if (!text || CONFIG.languages.indexOf(target) === -1) return sendJson(res, 400, { ok: false, code: 'INVALID' });
       return translateText(text, target).then((translated) => sendJson(res, 200, { ok: true, translated }));
     });
+  }
+  if (req.method === 'POST' && pathname === '/api/report') {
+    return readBody(req, (body) => {
+      const id = body && body.claimId;
+      const reason = body && body.reason;
+      if (!id || !findClaimById(id)) return sendJson(res, 404, { ok: false, code: 'NOT_FOUND' });
+      store.reports[id] = store.reports[id] || [];
+      store.reports[id].push({ reason: String(reason || '').slice(0, 200), at: Date.now(), ip: clientIp(req) });
+      logModeration({ type: 'reported', claimId: id, reason: String(reason || '').slice(0, 200) });
+      persist();
+      return sendJson(res, 200, { ok: true, reportCount: store.reports[id].length });
+    });
+  }
+  if (req.method === 'GET' && pathname === '/api/moderation/log') {
+    // admin-only: requires a simple shared secret via header
+    const secret = CONFIG.moderation.adminSecret || process.env.ADMIN_SECRET || '';
+    if (!secret || req.headers['x-admin-secret'] !== secret) return sendJson(res, 403, { ok: false, code: 'FORBIDDEN' });
+    return sendJson(res, 200, { log: store.moderationLog, reports: store.reports });
   }
   if (req.method === 'POST' && pathname === '/api/like') {
     return readBody(req, (body) => {

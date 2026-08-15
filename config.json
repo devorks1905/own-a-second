@@ -71,5 +71,14 @@
     ],
     "defaultDurationHours": 72,
     "bidIncrementUsd": 10
+  },
+  "moderation": {
+    "mode": "filter",
+    "bannedWords": [
+      "nigger", "nigga", "faggot", "retard", "kill yourself", "kys",
+      "child porn", "pedo", "cp ", "terrorist", "bomb", "isis",
+      "hitler", "nazi", "holocaust", "rape", "slut", "whore"
+    ],
+    "claimRateLimitPerHour": 20
   }
 }
