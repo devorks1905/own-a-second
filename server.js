@@ -859,7 +859,7 @@ function handleApi(req, res, pathname) {
 }
 
 function serveStatic(req, res, pathname) {
-  let file = pathname === '/' ? '/index.html' : pathname;
+  let file = pathname === '/' ? '/index.html' : (pathname === '/legal' ? '/legal.html' : pathname);
   const filePath = path.normalize(path.join(SITE_DIR, file));
   if (!filePath.startsWith(SITE_DIR)) return send(res, 403, 'Forbidden', { 'Content-Type': 'text/plain' });
   fs.readFile(filePath, (err, buf) => {
