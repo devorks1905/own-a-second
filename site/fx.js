@@ -5,13 +5,13 @@
   var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var FINE = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-  /* ---------- 1. particle field — "moments in time" ---------- */
+  /* ---------- 1. particle field — "moments in time" (constellation) ---------- */
   (function particles() {
     var canvas = document.getElementById('fxCanvas');
     if (!canvas) return;
     var ctx = canvas.getContext('2d');
     var W, H, pts = [];
-    var N = window.innerWidth < 640 ? 45 : 90;
+    var N = window.innerWidth < 640 ? 70 : 150;
 
     function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
     resize();
@@ -20,33 +20,46 @@
     function make() {
       return {
         x: Math.random() * W, y: Math.random() * H,
-        r: Math.random() * 1.6 + .4,
-        vx: (Math.random() - .5) * .12, vy: (Math.random() - .5) * .12,
-        tw: Math.random() * Math.PI * 2, tws: .01 + Math.random() * .03,
-        g: Math.random() > .7 // some green (live) tint
+        r: Math.random() * 1.8 + .5,
+        vx: (Math.random() - .5) * .22, vy: (Math.random() - .5) * .22,
+        tw: Math.random() * Math.PI * 2, tws: .015 + Math.random() * .05,
+        g: Math.random() > .7
       };
     }
     for (var i = 0; i < N; i++) pts.push(make());
 
     function frame() {
       ctx.clearRect(0, 0, W, H);
+      var LINK = 110;
       for (var i = 0; i < pts.length; i++) {
         var p = pts[i];
         p.x += p.vx; p.y += p.vy; p.tw += p.tws;
         if (p.x < -10) p.x = W + 10; if (p.x > W + 10) p.x = -10;
         if (p.y < -10) p.y = H + 10; if (p.y > H + 10) p.y = -10;
-        var a = .25 + Math.abs(Math.sin(p.tw)) * .5;
+        // constellation lines
+        for (var j = i + 1; j < pts.length; j++) {
+          var q = pts[j];
+          var dx = p.x - q.x, dy = p.y - q.y;
+          var d = dx * dx + dy * dy;
+          if (d < LINK * LINK) {
+            var a = (1 - Math.sqrt(d) / LINK) * .14;
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(240,180,41,' + a + ')';
+            ctx.lineWidth = .5;
+            ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
+            ctx.stroke();
+          }
+        }
+        var al = .3 + Math.abs(Math.sin(p.tw)) * .6;
         ctx.beginPath();
-        ctx.fillStyle = p.g ? 'rgba(52,211,153,' + a * .6 + ')' : 'rgba(240,180,41,' + a + ')';
+        ctx.fillStyle = p.g ? 'rgba(52,211,153,' + al * .7 + ')' : 'rgba(240,180,41,' + al + ')';
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
       }
       requestAnimationFrame(frame);
     }
     if (!REDUCED) frame();
-    else { // static dots for reduced motion
-      for (var i = 0; i < pts.length; i++) { var p = pts[i]; ctx.beginPath(); ctx.fillStyle = 'rgba(240,180,41,.35)'; ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill(); }
-    }
+    else { for (var i = 0; i < pts.length; i++) { var p = pts[i]; ctx.beginPath(); ctx.fillStyle = 'rgba(240,180,41,.35)'; ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill(); } }
   })();
 
   /* ---------- 2. scroll reveal ---------- */
@@ -89,5 +102,35 @@
       });
       el.addEventListener('mouseleave', function () { el.style.transform = ''; });
     });
+  })();
+  /* ---------- 5. clock pulse rings (radiate every second) ---------- */
+  (function rings() {
+    var card = document.querySelector('.clock-card');
+    if (!card || REDUCED) return;
+    var lastSec = -1;
+    setInterval(function () {
+      var sec = Math.floor(Date.now() / 1000);
+      if (sec === lastSec) return;
+      lastSec = sec;
+      var ring = document.createElement('span');
+      ring.className = 'ring';
+      card.appendChild(ring);
+      setTimeout(function () { if (ring.parentNode) ring.parentNode.removeChild(ring); }, 1500);
+    }, 200);
+  })();
+
+  /* ---------- 6. intro curtain removal ---------- */
+  (function curtain() {
+    var c = document.getElementById('introCurtain');
+    if (!c) return;
+    var mark = document.createElement('span');
+    mark.className = 'c-mark';
+    mark.textContent = 'OWN A SECOND';
+    c.appendChild(mark);
+    window.addEventListener('load', function () {
+      setTimeout(function () { c.classList.add('hide'); }, 600);
+    });
+    // fallback if load already fired
+    if (document.readyState === 'complete') setTimeout(function () { c.classList.add('hide'); }, 600);
   })();
 })();

@@ -323,3 +323,34 @@ h1{animation:h1In 1s var(--ease) both}
 /* --- soft focus vignette --- */
 html::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.5) 100%)}
+
+/* ============================================================
+   INTENSIFIED FX — curtain intro, clock pulse rings, glow-up
+   ============================================================ */
+
+/* --- full-screen intro curtain --- */
+#introCurtain{position:fixed;inset:0;z-index:999;background:#06060d;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .7s var(--ease),transform .9s var(--ease);}
+#introCurtain .c-mark{font-family:var(--mono);font-weight:800;letter-spacing:4px;font-size:clamp(24px,6vw,44px);
+  background:linear-gradient(90deg,var(--gold),var(--gold3));-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:cMark 1.4s var(--ease) both}
+@keyframes cMark{from{opacity:0;letter-spacing:14px;filter:blur(8px)}to{opacity:1;letter-spacing:4px;filter:none}}
+#introCurtain.hide{opacity:0;transform:translateY(-100%);pointer-events:none}
+
+/* --- clock pulse rings (radiate every second) --- */
+.clock-card .ring{position:absolute;top:50%;left:50%;width:120px;height:120px;margin:-60px 0 0 -60px;
+  border:1px solid rgba(240,180,41,.5);border-radius:50%;pointer-events:none;
+  animation:ringOut 1.4s var(--ease) forwards}
+.clock-card .ring:nth-child(2n){border-color:rgba(52,211,153,.4)}
+@keyframes ringOut{from{transform:scale(.4);opacity:.9}to{transform:scale(6);opacity:0}}
+
+/* --- stronger ambient glow on clock --- */
+.clock-card{box-shadow:0 30px 90px -30px rgba(0,0,0,.8),0 0 80px -20px rgba(240,180,41,.25)}
+
+/* --- feed card glow on hover (stronger) --- */
+.feed-item:hover{box-shadow:0 14px 40px -12px rgba(0,0,0,.8),0 0 30px -6px rgba(240,180,41,.35)}
+
+/* --- button glow pulse --- */
+.btn-primary,.claim-now{animation:btnGlow 3s var(--ease) infinite}
+@keyframes btnGlow{0%,100%{box-shadow:0 4px 22px rgba(240,180,41,.3)}50%{box-shadow:0 4px 34px rgba(240,180,41,.55)}}
