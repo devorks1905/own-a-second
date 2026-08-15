@@ -10,7 +10,5 @@
   "engines": {
     "node": ">=18"
   },
-  "dependencies": {
-    "puppeteer": "^24.43.1"
-  }
+  "dependencies": {}
 }
